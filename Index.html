@@ -2,18 +2,448 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Скачать Перекуп</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ПЕРЕКУП ULTRA 2.0</title>
     <style>
-        body { background: #0a0e14; color: white; font-family: sans-serif; text-align: center; padding: 50px 20px; }
-        h1 { color: #8ad4ff; }
-        .btn { display: inline-block; background: #1f8b4c; color: white; padding: 15px 30px; text-decoration: none; border-radius: 30px; font-size: 18px; font-weight: bold; margin-top: 20px; box-shadow: 0 5px 0 #0d4425; }
-        .btn:active { transform: translateY(5px); box-shadow: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; user-select: none; }
+        body { background: radial-gradient(circle at top, #1a2635, #070b10); min-height: 100vh; display: flex; justify-content: center; padding: 10px; color: #fff; }
+        
+        .game { max-width: 600px; width: 100%; background: linear-gradient(145deg, #1e2532, #12171f); border-radius: 30px; padding: 15px; box-shadow: 0 20px 50px #000; border: 1px solid #4a586c; display: flex; flex-direction: column; gap: 10px; }
+
+        /* HEADER */
+        .header { display: flex; flex-direction: column; gap: 8px; background: #0d121a; padding: 12px; border-radius: 20px; border: 1px solid #2e3948; }
+        .stats-row { display: flex; justify-content: space-between; align-items: center; }
+        .stat-box { font-weight: bold; font-size: 14px; display: flex; align-items: center; gap: 5px; }
+        .money { color: #73c8ff; }
+        .gold { color: #ffd700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+        .level-box { background: #1f8b4c; padding: 4px 10px; border-radius: 10px; font-size: 12px; }
+        
+        .xp-bar { width: 100%; height: 6px; background: #000; border-radius: 5px; overflow: hidden; }
+        .xp-fill { height: 100%; background: #ffd700; width: 0%; transition: 0.3s; }
+
+        /* TABS */
+        .tabs { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab { flex: 1; background: #18202c; padding: 10px 5px; border-radius: 12px; text-align: center; font-size: 11px; font-weight: bold; color: #8a9ab0; border: 1px solid #2b3545; cursor: pointer; white-space: nowrap; }
+        .tab.active { background: #2a3a4e; color: #fff; border-color: #4a5a6e; }
+
+        /* SCREEN */
+        .screen { background: #0a0f16; border-radius: 20px; padding: 15px; min-height: 400px; max-height: 550px; overflow-y: auto; border: 1px solid #2b3545; }
+        .screen::-webkit-scrollbar { width: 4px; }
+        .screen::-webkit-scrollbar-thumb { background: #3e4b5e; border-radius: 10px; }
+
+        /* PHONE ITEMS */
+        .phone-card { background: #18202c; border-radius: 15px; padding: 12px; margin-bottom: 10px; border: 1px solid #354154; display: flex; gap: 15px; align-items: center; }
+        .phone-info { flex: 1; }
+        .phone-title { font-weight: bold; font-size: 15px; margin-bottom: 4px; }
+        .phone-specs { font-size: 11px; color: #8a9ab0; margin-bottom: 6px; }
+        .phone-price { font-size: 16px; font-weight: 800; color: #73c8ff; }
+        .btn { background: #2f3b4a; border: none; border-radius: 10px; padding: 10px 15px; font-weight: bold; color: #fff; cursor: pointer; box-shadow: 0 3px 0 #0d121c; transition: 0.1s; font-size: 12px; }
+        .btn:active { transform: translateY(3px); box-shadow: none; }
+        .btn-green { background: #1f8b4c; box-shadow: 0 3px 0 #0d4425; }
+        .btn-gold { background: #b57c1f; box-shadow: 0 3px 0 #6b480f; color: #fff; }
+        .btn-red { background: #aa3c3c; box-shadow: 0 3px 0 #5e1f1f; }
+        .btn:disabled { opacity: 0.5; pointer-events: none; }
+
+        /* CSS PHONE MODELS (Более детальные) */
+        .phone-model { width: 60px; height: 120px; border-radius: 12px; position: relative; background: #000; border: 2px solid #333; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.5); flex-shrink: 0; }
+        .phone-model.tablet { width: 90px; height: 120px; border-radius: 8px; }
+        .pm-screen { position: absolute; inset: 2px; border-radius: 10px; background: linear-gradient(135deg, #1a2a3a, #0a1520); display: flex; justify-content: center; align-items: center; }
+        .pm-cam { position: absolute; top: 5px; left: 5px; width: 12px; height: 12px; background: #222; border-radius: 50%; border: 1px solid #444; display: flex; justify-content: center; align-items: center; }
+        .pm-cam::after { content: ''; width: 6px; height: 6px; background: #0af; border-radius: 50%; }
+        .pm-logo { font-size: 10px; color: rgba(255,255,255,0.1); font-weight: bold; }
+        .pm-notch { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 40%; height: 8px; background: #000; border-bottom-left-radius: 6px; border-bottom-right-radius: 6px; }
+
+        /* WORKSHOP */
+        .workshop { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .big-phone { width: 120px; height: 240px; border-radius: 20px; background: #111; border: 3px solid #444; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: 0.3s; }
+        .big-phone.tablet { width: 180px; height: 240px; border-radius: 15px; }
+        .big-phone.opened { transform: rotateY(15deg); border-color: #0af; box-shadow: 0 0 20px #0af; }
+        .big-screen { position: absolute; inset: 4px; border-radius: 16px; background: linear-gradient(135deg, #1a2a3a, #0a1520); display: flex; justify-content: center; align-items: center; font-weight: bold; color: rgba(255,255,255,0.1); font-size: 20px; }
+        
+        .repair-step { background: #18202c; padding: 10px; border-radius: 12px; width: 100%; border: 1px solid #354154; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .step-text { font-size: 12px; }
+        .risk-bar { width: 100%; height: 8px; background: #000; border-radius: 5px; overflow: hidden; margin-top: 5px; }
+        .risk-fill { height: 100%; background: linear-gradient(90deg, #0f0, #ff0, #f00); width: 50%; transition: 0.3s; }
+
+        /* QUESTS */
+        .quest-card { background: #18202c; padding: 15px; border-radius: 15px; margin-bottom: 10px; border-left: 4px solid #ffd700; }
+        .quest-desc { font-size: 14px; margin-bottom: 5px; }
+        .quest-progress { font-size: 12px; color: #8a9ab0; margin-bottom: 10px; }
+        .quest-reward { color: #ffd700; font-weight: bold; font-size: 12px; }
+
+        .hidden { display: none !important; }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1f8b4c; padding: 10px 20px; border-radius: 20px; font-weight: bold; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 1000; }
+        .toast.show { opacity: 1; }
     </style>
 </head>
 <body>
-    <h1>🔄 ПЕРЕКУП</h1>
-    <p>Нажми на кнопку ниже, чтобы скачать игру.</p>
-    <a href="base.apk" class="btn" download>📥 Скачать APK</a>
+
+<div class="game">
+    <!-- HEADER -->
+    <div class="header">
+        <div class="stats-row">
+            <div class="stat-box money">💵 <span id="ui-money">0</span> ₽</div>
+            <div class="stat-box gold">🪙 <span id="ui-gold">0</span></div>
+            <div class="level-box">Ур. <span id="ui-level">1</span></div>
+        </div>
+        <div class="xp-bar"><div class="xp-fill" id="ui-xp"></div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <div class="tab active" data-tab="market">🏪 Рынок</div>
+        <div class="tab" data-tab="premium">💎 Премиум</div>
+        <div class="tab" data-tab="workshop">🔧 Мастерская</div>
+        <div class="tab" data-tab="quests">📋 Задания</div>
+    </div>
+
+    <!-- SCREEN -->
+    <div class="screen" id="screen">
+        <!-- Содержимое рендерится через JS -->
+    </div>
+</div>
+
+<div class="toast" id="toast">Уведомление</div>
+
+<script>
+// ================= ДАННЫЕ =================
+const PHONES_NORMAL = [
+    { id: 1, name: 'iPhone 7', brand: 'Apple', price: 5000, specs: '32GB, трещина', risk: 0.4, type: 'phone' },
+    { id: 2, name: 'Samsung A10', brand: 'Samsung', price: 4500, specs: '32GB, разбит экран', risk: 0.45, type: 'phone' },
+    { id: 3, name: 'Xiaomi Redmi 8', brand: 'Xiaomi', price: 6000, specs: '64GB, не включается', risk: 0.5, type: 'phone' },
+    { id: 4, name: 'Honor 8X', brand: 'Honor', price: 7500, specs: '128GB, батарея', risk: 0.35, type: 'phone' },
+    { id: 5, name: 'iPhone XR', brand: 'Apple', price: 15000, specs: '64GB, FaceID', risk: 0.3, type: 'phone' },
+    { id: 6, name: 'Google Pixel 4', brand: 'Google', price: 12000, specs: '64GB, модуль', risk: 0.35, type: 'phone' }
+];
+
+const PHONES_PREMIUM = [
+    { id: 10, name: 'iPhone 14 Pro', brand: 'Apple', price: 60000, specs: '256GB, оригинал', risk: 0.2, type: 'phone', currency: 'gold', cost: 5 },
+    { id: 11, name: 'Samsung S23 Ultra', brand: 'Samsung', price: 75000, specs: '512GB, AMOLED', risk: 0.15, type: 'phone', currency: 'gold', cost: 8 },
+    { id: 12, name: 'iPad Pro 11"', brand: 'Apple', price: 45000, specs: '128GB, M1', risk: 0.25, type: 'tablet', currency: 'gold', cost: 6 },
+    { id: 13, name: 'Xiaomi Pad 6', brand: 'Xiaomi', price: 25000, specs: '256GB, 144Hz', risk: 0.3, type: 'tablet', currency: 'gold', cost: 4 }
+];
+
+// ================= СОСТОЯНИЕ =================
+let state = {
+    money: 50000,
+    gold: 0,
+    level: 1,
+    xp: 0,
+    xpNext: 1000,
+    currentTab: 'market',
+    activePhone: null, // Телефон в мастерской
+    activePhoneType: 'phone', // phone или tablet
+    repairStage: 0, // 0 - куплен, 1 - разобран, 2 - деталь заменена, 3 - собран
+    inventory: { screwdriver: true, parts: 0 },
+    quests: [],
+    lastQuestReset: 0,
+    phonesSold: 0
+};
+
+// ================= ЛОГИКА УРОВНЕЙ =================
+function addXP(amount) {
+    state.xp += amount;
+    if (state.xp >= state.xpNext && state.level < 45) {
+        state.level++;
+        state.xp -= state.xpNext;
+        state.xpNext = Math.floor(state.xpNext * 1.2);
+        showToast(`🎉 Новый уровень: ${state.level}!`);
+    }
+    saveGame();
+}
+
+// ================= КВЕСТЫ (24 часа) =================
+function generateQuests() {
+    const now = Date.now();
+    const day = 24 * 60 * 60 * 1000;
+    
+    // Если квестов нет или прошло 24 часа
+    if (state.quests.length === 0 || (now - state.lastQuestReset > day)) {
+        state.quests = [
+            { id: 1, desc: 'Продать 3 телефона', target: 3, current: 0, reward: 5, type: 'sell' },
+            { id: 2, desc: 'Заработать 20000 ₽', target: 20000, current: 0, reward: 10, type: 'earn' },
+            { id: 3, desc: 'Купить телефон на рынке', target: 1, current: 0, reward: 3, type: 'buy' }
+        ];
+        state.lastQuestReset = now;
+        saveGame();
+    }
+}
+
+function checkQuests(type, amount) {
+    let updated = false;
+    state.quests.forEach(q => {
+        if (q.type === type && q.current < q.target) {
+            q.current += amount;
+            if (q.current >= q.target) {
+                state.gold += q.reward;
+                showToast(`✅ Задание выполнено! +${q.reward} 🪙`);
+            }
+            updated = true;
+        }
+    });
+    if (updated) saveGame();
+}
+
+// ================= СОХРАНЕНИЕ =================
+function saveGame() {
+    localStorage.setItem('perekup_ultra_2', JSON.stringify(state));
+}
+function loadGame() {
+    const saved = localStorage.getItem('perekup_ultra_2');
+    if (saved) {
+        state = JSON.parse(saved);
+    } else {
+        generateQuests();
+    }
+}
+
+// ================= UI =================
+function showToast(text) {
+    const t = document.getElementById('toast');
+    t.textContent = text;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function updateUI() {
+    document.getElementById('ui-money').textContent = state.money.toLocaleString('ru-RU');
+    document.getElementById('ui-gold').textContent = state.gold;
+    document.getElementById('ui-level').textContent = state.level;
+    const xpPercent = Math.min(100, (state.xp / state.xpNext) * 100);
+    document.getElementById('ui-xp').style.width = xpPercent + '%';
+}
+
+// Отрисовка телефона (CSS)
+function renderPhoneModel(type, brand) {
+    if (type === 'tablet') {
+        return `<div class="phone-model tablet"><div class="pm-screen"><div class="pm-logo">${brand}</div></div></div>`;
+    }
+    return `
+        <div class="phone-model">
+            <div class="pm-cam"></div>
+            <div class="pm-notch"></div>
+            <div class="pm-screen"><div class="pm-logo">${brand}</div></div>
+        </div>
+    `;
+}
+
+// ================= РЕНДЕР ВКЛАДОК =================
+function render() {
+    updateUI();
+    const screen = document.getElementById('screen');
+    
+    // Подсветка вкладок
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === state.currentTab));
+
+    if (state.currentTab === 'market') renderMarket(screen, PHONES_NORMAL, 'money');
+    if (state.currentTab === 'premium') renderMarket(screen, PHONES_PREMIUM, 'gold');
+    if (state.currentTab === 'workshop') renderWorkshop(screen);
+    if (state.currentTab === 'quests') renderQuests(screen);
+}
+
+function renderMarket(screen, list, currency) {
+    let html = `<h3 style="margin-bottom:10px;">${currency === 'gold' ? '💎 Премиум рынок (за монеты)' : '🏪 Обычный рынок'}</h3>`;
+    
+    if (currency === 'gold' && state.level < 5) {
+        screen.innerHTML = `<div style="text-align:center; padding:50px; color:#8a9ab0;">Премиум рынок откроется на 5 уровне! (Сейчас у вас ${state.level})</div>`;
+        return;
+    }
+
+    list.forEach(p => {
+        const canBuy = currency === 'gold' ? state.gold >= p.cost : state.money >= p.price;
+        html += `
+            <div class="phone-card">
+                ${renderPhoneModel(p.type, p.brand)}
+                <div class="phone-info">
+                    <div class="phone-title">${p.name}</div>
+                    <div class="phone-specs">${p.specs}</div>
+                    <div class="phone-price">${currency === 'gold' ? p.cost + ' 🪙' : p.price + ' ₽'}</div>
+                </div>
+                <button class="btn ${canBuy ? 'btn-green' : ''}" onclick="buyPhone(${p.id}, '${currency}')" ${!canBuy || state.activePhone ? 'disabled' : ''}>
+                    ${state.activePhone ? 'Занято' : 'Купить'}
+                </button>
+            </div>
+        `;
+    });
+    screen.innerHTML = html;
+}
+
+function renderWorkshop(screen) {
+    if (!state.activePhone) {
+        screen.innerHTML = `<div style="text-align:center; padding:50px; color:#8a9ab0;">
+            <div style="font-size:40px; margin-bottom:10px;">🔧</div>
+            Мастерская пуста.<br>Купи телефон на рынке, чтобы начать починку.
+        </div>`;
+        return;
+    }
+
+    const p = state.activePhone;
+    const isTablet = p.type === 'tablet';
+    const riskPercent = Math.round(p.risk * 100);
+    
+    // Этапы починки
+    let actionBtn = '';
+    let statusText = '';
+
+    if (state.repairStage === 0) {
+        statusText = 'Шаг 1: Открыть корпус';
+        actionBtn = `<button class="btn btn-gold" onclick="repairAction()">Разобрать</button>`;
+    } else if (state.repairStage === 1) {
+        statusText = 'Шаг 2: Отсоединить шлейфы и заменить деталь';
+        actionBtn = `<button class="btn btn-gold" onclick="repairAction()">Заменить деталь (500₽)</button>`;
+    } else if (state.repairStage === 2) {
+        statusText = 'Шаг 3: Собрать и проверить';
+        actionBtn = `<button class="btn btn-gold" onclick="repairAction()">Собрать и включить</button>`;
+    } else if (state.repairStage === 3) {
+        statusText = 'Телефон успешно починен!';
+        actionBtn = `<button class="btn btn-green" onclick="sellPhone()">Продать за ${Math.floor(p.price * 1.8)} ₽</button>`;
+    } else if (state.repairStage === -1) {
+        statusText = '❌ Телефон сломан окончательно!';
+        actionBtn = `<button class="btn btn-red" onclick="scrapPhone()">Сдать на запчасти (1000₽)</button>`;
+    }
+
+    screen.innerHTML = `
+        <div class="workshop">
+            <h3>${p.name}</h3>
+            <div class="big-phone ${state.repairStage > 0 ? 'opened' : ''} ${isTablet ? 'tablet' : ''}">
+                <div class="big-screen">${p.brand}</div>
+            </div>
+            
+            <div class="repair-step">
+                <div class="step-text">${statusText}</div>
+            </div>
+            
+            <div style="width:100%; text-align:center;">
+                <div class="step-text">Риск поломки при действии: <span style="color:${riskPercent > 40 ? '#f00' : '#ff0'}">${riskPercent}%</span></div>
+                <div class="risk-bar"><div class="risk-fill" style="width:${riskPercent}%"></div></div>
+            </div>
+
+            ${actionBtn}
+        </div>
+    `;
+}
+
+function renderQuests(screen) {
+    let html = `<h3 style="margin-bottom:10px;">📋 Ежедневные задания</h3>`;
+    html += `<p style="font-size:12px; color:#8a9ab0; margin-bottom:15px;">Обновляются каждые 24 часа. Награда: Золотые монеты 🪙</p>`;
+    
+    state.quests.forEach(q => {
+        const isDone = q.current >= q.target;
+        html += `
+            <div class="quest-card">
+                <div class="quest-desc">${q.desc}</div>
+                <div class="quest-progress">Прогресс: ${Math.min(q.current, q.target)} / ${q.target}</div>
+                <div class="quest-reward">Награда: ${q.reward} 🪙 ${isDone ? '(Получено)' : ''}</div>
+            </div>
+        `;
+    });
+    screen.innerHTML = html;
+}
+
+// ================= ДЕЙСТВИЯ =================
+window.buyPhone = function(id, currency) {
+    if (state.activePhone) return;
+    const pool = currency === 'gold' ? PHONES_PREMIUM : PHONES_NORMAL;
+    const p = pool.find(x => x.id === id);
+    
+    if (currency === 'gold') {
+        if (state.gold < p.cost) return;
+        state.gold -= p.cost;
+    } else {
+        if (state.money < p.price) return;
+        state.money -= p.price;
+    }
+    
+    checkQuests('buy', 1);
+    state.activePhone = { ...p };
+    state.activePhoneType = p.type;
+    state.repairStage = 0;
+    state.currentTab = 'workshop';
+    saveGame();
+    render();
+};
+
+window.repairAction = function() {
+    const p = state.activePhone;
+    if (!p) return;
+
+    // Если на этапе замены детали, списываем деньги
+    if (state.repairStage === 1) {
+        if (state.money < 500) {
+            showToast('Не хватает 500₽ на деталь!');
+            return;
+        }
+        state.money -= 500;
+    }
+
+    // Бросок кубика на успех. Риск увеличивается с каждым этапом
+    let currentRisk = p.risk;
+    if (state.repairStage === 1) currentRisk += 0.1; 
+    if (state.repairStage === 2) currentRisk += 0.1;
+
+    const roll = Math.random();
+    
+    if (roll < currentRisk) {
+        // Сломал
+        showToast('💥 Что-то пошло не так! Телефон сломан.');
+        state.repairStage = -1;
+    } else {
+        // Успех
+        state.repairStage++;
+        if (state.repairStage === 3) {
+            showToast('✅ Успех! Телефон готов к продаже.');
+        } else {
+            showToast('⚙️ Этап пройден успешно.');
+        }
+    }
+    saveGame();
+    render();
+};
+
+window.sellPhone = function() {
+    const p = state.activePhone;
+    const sellPrice = Math.floor(p.price * 1.8);
+    state.money += sellPrice;
+    state.phonesSold++;
+    
+    // Награды и опыт
+    addXP(p.type === 'tablet' ? 150 : 100);
+    checkQuests('sell', 1);
+    checkQuests('earn', sellPrice);
+    
+    showToast(`💰 Продан за ${sellPrice} ₽`);
+    state.activePhone = null;
+    state.repairStage = 0;
+    state.currentTab = 'market';
+    saveGame();
+    render();
+};
+
+window.scrapPhone = function() {
+    state.money += 1000;
+    addXP(20);
+    showToast('💸 Сдан на запчасти за 1000 ₽');
+    state.activePhone = null;
+    state.repairStage = 0;
+    state.currentTab = 'market';
+    saveGame();
+    render();
+};
+
+// ================= НАВИГАЦИЯ =================
+document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        state.currentTab = tab.dataset.tab;
+        render();
+    });
+});
+
+// ================= СТАРТ =================
+loadGame();
+generateQuests(); // Проверяем, не пора ли обновить квесты
+render();
+
+</script>
 </body>
 </html>
