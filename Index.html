@@ -58,7 +58,7 @@
         .screen::-webkit-scrollbar { width: 4px; }
         .screen::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        /* ================= МОДЕЛИ ТЕЛЕФОНОВ (3D ИМБА) ================= */
+        /* ================= МОДЕЛИ ТЕЛЕФОНОВ (3D) ================= */
         .device-model { position: relative; display: flex; justify-content: center; align-items: center; perspective: 800px; }
         
         .phone-3d { 
@@ -135,7 +135,6 @@
 <body>
 
 <div class="game">
-    <!-- ШАПКА -->
     <div class="header">
         <div class="logo">ПЕРЕКУП IMBА</div>
         <div class="stats">
@@ -146,7 +145,6 @@
     </div>
     <div class="xp-container"><div class="xp-fill" id="ui-xp"></div></div>
 
-    <!-- ТАБЫ -->
     <div class="tabs">
         <div class="tab active" data-tab="market">🏪 Рынок</div>
         <div class="tab" data-tab="premium">💎 Премиум</div>
@@ -155,7 +153,6 @@
         <div class="tab" data-tab="quests">📋 Квесты</div>
     </div>
 
-    <!-- ЭКРАН -->
     <div class="screen" id="screen"></div>
 </div>
 
@@ -164,25 +161,25 @@
 <script>
 // ================= ДАННЫЕ =================
 const PHONES_NORMAL = [
-    { name: 'iPhone 7', brand: 'Apple', price: 6000, specs: '32GB, трещина', risk: 0.45, type: 'phone' },
-    { name: 'Samsung A10', brand: 'Samsung', price: 5500, specs: '32GB, разбит экран', risk: 0.50, type: 'phone' },
-    { name: 'Xiaomi Redmi 8', brand: 'Xiaomi', price: 7000, specs: '64GB, не включается', risk: 0.55, type: 'phone' },
-    { name: 'Honor 8X', brand: 'Honor', price: 8500, specs: '128GB, батарея', risk: 0.40, type: 'phone' },
-    { name: 'iPhone XR', brand: 'Apple', price: 18000, specs: '64GB, FaceID', risk: 0.35, type: 'phone' }
+    { name: 'iPhone 7', brand: 'Apple', price: 6000, specs: '32GB, трещина', risk: 0.12, type: 'phone' },
+    { name: 'Samsung A10', brand: 'Samsung', price: 5500, specs: '32GB, разбит экран', risk: 0.15, type: 'phone' },
+    { name: 'Xiaomi Redmi 8', brand: 'Xiaomi', price: 7000, specs: '64GB, не включается', risk: 0.18, type: 'phone' },
+    { name: 'Honor 8X', brand: 'Honor', price: 8500, specs: '128GB, батарея', risk: 0.10, type: 'phone' },
+    { name: 'iPhone XR', brand: 'Apple', price: 18000, specs: '64GB, FaceID', risk: 0.08, type: 'phone' }
 ];
 
 const PHONES_PREMIUM = [
-    { name: 'iPhone 14 Pro', brand: 'Apple', price: 80000, specs: '256GB, оригинал', risk: 0.25, type: 'phone', cost: 20 },
-    { name: 'Samsung S23 Ultra', brand: 'Samsung', price: 95000, specs: '512GB, AMOLED', risk: 0.20, type: 'phone', cost: 25 },
-    { name: 'iPad Pro 11"', brand: 'Apple', price: 60000, specs: '128GB, M1', risk: 0.30, type: 'tablet', cost: 15 },
-    { name: 'Xiaomi Pad 6', brand: 'Xiaomi', price: 40000, specs: '256GB, 144Hz', risk: 0.35, type: 'tablet', cost: 10 }
+    { name: 'iPhone 14 Pro', brand: 'Apple', price: 80000, specs: '256GB, оригинал', risk: 0.06, type: 'phone', cost: 20 },
+    { name: 'Samsung S23 Ultra', brand: 'Samsung', price: 95000, specs: '512GB, AMOLED', risk: 0.05, type: 'phone', cost: 25 },
+    { name: 'iPad Pro 11"', brand: 'Apple', price: 60000, specs: '128GB, M1', risk: 0.08, type: 'tablet', cost: 15 },
+    { name: 'Xiaomi Pad 6', brand: 'Xiaomi', price: 40000, specs: '256GB, 144Hz', risk: 0.10, type: 'tablet', cost: 10 }
 ];
 
 const PARTS_SHOP = [
     { id: 'screwdriver', name: 'Отвёртка', icon: '🪛', price: 1000, desc: 'Нужна для разборки' },
-    { id: 'screen', name: 'Экран', icon: '📱', price: 3000, desc: 'Снижает риск на 15%' },
-    { id: 'battery', name: 'Батарея', icon: '🔋', price: 2000, desc: 'Снижает риск на 10%' },
-    { id: 'camera', name: 'Камера', icon: '📷', price: 2500, desc: 'Снижает риск на 10%' }
+    { id: 'screen', name: 'Экран', icon: '📱', price: 3000, desc: 'Замена дисплея' },
+    { id: 'battery', name: 'Батарея', icon: '🔋', price: 2000, desc: 'Замена АКБ' },
+    { id: 'camera', name: 'Камера', icon: '📷', price: 2500, desc: 'Замена модуля' }
 ];
 
 const SELLER_NAMES = ['Алексей', 'Андрей', 'Дмитрий', 'Сергей', 'Павел', 'Ирина', 'Максим', 'Ольга'];
@@ -196,25 +193,19 @@ let state = {
     xpNext: 1000,
     currentTab: 'market',
     
-    // Инвентарь (что куплено в магазине)
     inventory: { screwdriver: 0, screen: 0, battery: 0, camera: 0 },
     
-    // Мастерская
     activePhone: null,
     repairStage: 0, 
-    // Этапы: 0 - разобран, 1 - выбрана деталь, 2 - собран, 3 - готов, -1 - сломан
     
-    // Рынок
     marketListings: [],
-    activeChat: null, // { type: 'market'|'friend', data: {...} },
+    activeChat: null,
     chatHistory: [],
     offersCount: 0,
     
-    // Друг
     friendBorrowed: false,
     friendChat: [{ sender: 'friend', text: 'Здарова, брат! Нужны деньги? Обращайся.' }],
 
-    // Квесты
     quests: [],
     lastQuestReset: 0
 };
@@ -238,9 +229,9 @@ function addXP(amount) {
     saveGame();
 }
 
-function saveGame() { localStorage.setItem('perekup_imba_v1', JSON.stringify(state)); }
+function saveGame() { localStorage.setItem('perekup_imba_v2', JSON.stringify(state)); }
 function loadGame() {
-    const saved = localStorage.getItem('perekup_imba_v1');
+    const saved = localStorage.getItem('perekup_imba_v2');
     if (saved) state = JSON.parse(saved);
     if (!state.marketListings || state.marketListings.length === 0) generateMarket();
     checkQuests();
@@ -378,11 +369,9 @@ function renderWorkshop(screen) {
     const p = state.activePhone;
     const isTablet = p.type === 'tablet';
     
-    // Логика риска
-    let baseRisk = p.risk;
-    let currentRisk = baseRisk;
-    if (state.repairStage === 1) currentRisk += 0.1; // Риск сборки
-    if (state.repairStage === 2) currentRisk += 0.05;
+    // Честный риск
+    let currentRisk = p.risk;
+    if (state.repairStage === 2) currentRisk += 0.05; // Риск при сборке чуть выше
 
     let html = `<div class="workbench">`;
     html += `<h3>${p.name}</h3>`;
@@ -400,7 +389,7 @@ function renderWorkshop(screen) {
 
     if (state.repairStage >= 0 && state.repairStage < 3) {
         html += `<div class="risk-bar"><div class="risk-fill" style="width:${Math.min(100, currentRisk*100)}%"></div></div>`;
-        html += `<div class="step-desc">Риск сломать: ${Math.round(currentRisk*100)}%</div>`;
+        html += `<div class="step-desc" style="color:${currentRisk > 0.15 ? 'var(--gold)' : 'var(--green)'}">Риск сломать: ${Math.round(currentRisk*100)}%</div>`;
     }
 
     // Кнопки
@@ -412,7 +401,6 @@ function renderWorkshop(screen) {
         }
     } 
     else if (state.repairStage === 1) {
-        // Проверяем, есть ли детали
         const hasParts = state.inventory.screen > 0 || state.inventory.battery > 0 || state.inventory.camera > 0;
         if (hasParts) {
             html += `<button class="btn btn-cyan" style="width:100%;" onclick="usePart()">⚙️ Установить деталь</button>`;
@@ -421,7 +409,7 @@ function renderWorkshop(screen) {
         }
     } 
     else if (state.repairStage === 2) {
-        html += `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0.1)">🔨 Собрать телефон</button>`;
+        html += `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0.05)">🔨 Собрать телефон</button>`;
     } 
     else if (state.repairStage === 3) {
         const sellPrice = Math.floor(p.price * 1.8) + (isTablet ? 15000 : 0);
@@ -529,19 +517,30 @@ window.closeChat = function() { state.activeChat = null; render(); };
 
 // ================= ДЕЙСТВИЯ =================
 
-// Торг
+// ИСПРАВЛЕННЫЙ ТОРГ
 window.bargain = function() {
     const t = state.chatTarget;
     state.offersCount++;
     const newPrice = Math.floor(t.sellerPrice * (0.85 + Math.random() * 0.1));
     state.chatHistory.push({ sender: 'me', text: `Может, отдашь за ${fmt(newPrice)}?` });
     
-    if (Math.random() > 0.3) {
+    const roll = Math.random();
+    
+    if (roll < 0.5) { 
+        // 50% - Соглашается
         t.sellerPrice = newPrice;
-        state.chatHistory.push({ sender: 'seller', text: `Ладно, договорились. Забирай.` });
+        state.chatHistory.push({ sender: 'seller', text: `Ладно, договорились. Забирай за ${fmt(newPrice)}.` });
+    } else if (roll < 0.85) { 
+        // 35% - Отказывается
+        state.chatHistory.push({ sender: 'seller', text: `Нет, брат, это слишком мало. Я лучше подожду.` });
     } else {
-        state.chatHistory.push({ sender: 'seller', text: `Нет, брат, это слишком мало.` });
+        // 15% - Блокирует
+        state.chatHistory.push({ sender: 'seller', text: `Всё, ты меня достал. Блокирую.` });
+        state.marketListings = state.marketListings.filter(x => x.id !== t.id);
+        showToast('🚫 Продавец заблокировал тебя!');
+        setTimeout(() => { state.activeChat = null; render(); }, 1500);
     }
+    saveGame();
     render();
 };
 
@@ -603,7 +602,6 @@ window.doRepair = function(extraRisk) {
 
 // Использование детали
 window.usePart = function() {
-    // Ищем, какая деталь есть в наличии
     let usedPart = null;
     if (state.inventory.screen > 0) usedPart = 'screen';
     else if (state.inventory.battery > 0) usedPart = 'battery';
@@ -611,7 +609,7 @@ window.usePart = function() {
     
     if (usedPart) {
         state.inventory[usedPart]--;
-        state.repairStage = 2; // Переходим к сборке
+        state.repairStage = 2; 
         showToast('Деталь заменена!');
         saveGame(); render();
     }
