@@ -3,46 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ПЕРЕКУП IMBА</title>
+    <title>ПЕРЕКУП УЛЬТРА</title>
     <style>
-        /* ================= ИМБА ГРАФИКА (CSS) ================= */
+        /* ================= СТИЛЬНЫЙ ИНТЕРФЕЙС (SLATE + NEON) ================= */
         :root {
-            --bg-main: #0a0c10;
-            --panel: rgba(20, 26, 35, 0.7);
-            --border: rgba(255, 255, 255, 0.1);
-            --cyan: #00f3ff;
-            --gold: #ffcc00;
-            --green: #00ff66;
-            --red: #ff0033;
-            --text: #e2e8f0;
-            --text-muted: #8a9ab0;
+            --bg-main: #0f172a; /* Темно-синий фон */
+            --panel: rgba(30, 41, 59, 0.85); /* Серо-синие панели */
+            --panel-hover: rgba(51, 65, 85, 0.9);
+            --border: rgba(148, 163, 184, 0.2);
+            --cyan: #06b6d4;
+            --gold: #eab308;
+            --green: #22c55e;
+            --red: #ef4444;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; user-select: none; }
         
         body { 
-            background: radial-gradient(circle at 50% -20%, #1a2a40 0%, #05070a 100%);
+            background: radial-gradient(circle at 50% -20%, #1e293b 0%, #020617 100%);
             min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 10px; color: var(--text);
             background-attachment: fixed;
         }
 
-        /* Стеклянная основа */
         .game { 
             max-width: 580px; width: 100%; background: var(--panel); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-radius: 32px; padding: 20px 18px; border: 1px solid var(--border);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 12px;
         }
 
         /* Шапка */
-        .header { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); padding: 12px 16px; border-radius: 20px; border: 1px solid var(--border); }
-        .logo { font-weight: 900; font-size: 18px; letter-spacing: 1px; background: linear-gradient(90deg, var(--cyan), #b042ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 10px rgba(0, 243, 255, 0.3); }
+        .header { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 12px 16px; border-radius: 20px; border: 1px solid var(--border); }
+        .logo { font-weight: 900; font-size: 18px; letter-spacing: 1px; background: linear-gradient(90deg, #22d3ee, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .stats { display: flex; gap: 8px; font-size: 13px; font-weight: 800; }
         .stat { padding: 4px 10px; border-radius: 12px; display: flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); }
-        .stat.money { color: var(--cyan); text-shadow: 0 0 8px rgba(0, 243, 255, 0.4); }
-        .stat.gold { color: var(--gold); text-shadow: 0 0 8px rgba(255, 204, 0, 0.4); }
+        .stat.money { color: var(--cyan); }
+        .stat.gold { color: var(--gold); }
         
         .xp-container { width: 100%; height: 6px; background: #000; border-radius: 3px; margin-top: 4px; overflow: hidden; border: 1px solid var(--border); }
-        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #ff8c00); width: 0%; box-shadow: 0 0 10px var(--gold); transition: 0.3s; }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--gold), #f59e0b); width: 0%; transition: 0.3s; }
 
         /* Табы */
         .tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; }
@@ -51,92 +51,86 @@
             flex: 1; background: rgba(255,255,255,0.03); padding: 10px 8px; border-radius: 16px; text-align: center; 
             font-size: 11px; font-weight: 800; color: var(--text-muted); border: 1px solid var(--border); cursor: pointer; white-space: nowrap; transition: 0.2s;
         }
-        .tab.active { background: rgba(0, 243, 255, 0.1); color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 15px rgba(0, 243, 255, 0.2); }
+        .tab.active { background: rgba(6, 182, 212, 0.15); color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 10px rgba(6, 182, 212, 0.2); }
 
         /* Экран */
-        .screen { background: rgba(0,0,0,0.5); border-radius: 24px; padding: 15px; min-height: 460px; max-height: 520px; overflow-y: auto; border: 1px solid var(--border); box-shadow: inset 0 4px 20px rgba(0,0,0,0.8); }
+        .screen { background: rgba(15, 23, 42, 0.6); border-radius: 24px; padding: 15px; min-height: 460px; max-height: 520px; overflow-y: auto; border: 1px solid var(--border); box-shadow: inset 0 4px 15px rgba(0,0,0,0.5); }
         .screen::-webkit-scrollbar { width: 4px; }
         .screen::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
-        /* ================= МОДЕЛИ ТЕЛЕФОНОВ (3D) ================= */
+        /* 3D Модели */
         .device-model { position: relative; display: flex; justify-content: center; align-items: center; perspective: 800px; }
-        
         .phone-3d { 
-            width: 70px; height: 140px; border-radius: 14px; position: relative; 
-            background: linear-gradient(135deg, #2a2a2a, #111); border: 1px solid #555;
-            box-shadow: -5px 10px 20px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.2);
+            width: 60px; height: 120px; border-radius: 12px; position: relative; 
+            background: linear-gradient(135deg, #334155, #0f172a); border: 1px solid #475569;
+            box-shadow: -3px 8px 15px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.1);
             transform: rotateY(-15deg) rotateX(5deg); transition: 0.3s;
         }
-        .phone-3d.tablet { width: 100px; height: 130px; border-radius: 10px; }
+        .phone-3d.tablet { width: 90px; height: 120px; border-radius: 8px; }
         
-        .p-screen { position: absolute; inset: 3px; border-radius: 11px; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .p-screen::after { content: ''; position: absolute; top: 0; left: -50%; width: 200%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-20deg); animation: shine 3s infinite; }
+        .p-screen { position: absolute; inset: 3px; border-radius: 9px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .p-screen::after { content: ''; position: absolute; top: 0; left: -100%; width: 200%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-20deg); animation: shine 4s infinite; }
         @keyframes shine { 0% { left: -100%; } 20% { left: 100%; } 100% { left: 100%; } }
 
-        .p-cam { position: absolute; top: 5px; left: 5px; width: 18px; height: 18px; background: #111; border-radius: 6px; border: 1px solid #333; display: flex; flex-wrap: wrap; padding: 2px; gap: 2px; }
-        .p-lens { width: 5px; height: 5px; background: #000; border-radius: 50%; border: 1px solid #0af; box-shadow: 0 0 5px #0af; }
-        .p-logo { font-size: 12px; font-weight: 900; color: rgba(255,255,255,0.05); }
+        .p-cam { position: absolute; top: 4px; left: 4px; width: 14px; height: 14px; background: #0f172a; border-radius: 4px; border: 1px solid #334155; display: flex; flex-wrap: wrap; padding: 1px; gap: 1px; }
+        .p-lens { width: 4px; height: 4px; background: #000; border-radius: 50%; border: 1px solid #0ea5e9; }
+        .p-logo { font-size: 10px; font-weight: 900; color: rgba(255,255,255,0.05); }
 
-        /* Карточки на рынке */
-        .market-card { background: rgba(255,255,255,0.03); border-radius: 16px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; gap: 15px; align-items: center; transition: 0.1s; }
+        /* Карточки */
+        .market-card { background: rgba(30, 41, 59, 0.6); border-radius: 16px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border); display: flex; gap: 12px; align-items: center; transition: 0.1s; }
         .market-card:active { transform: scale(0.98); border-color: var(--cyan); }
         .mc-info { flex: 1; }
-        .mc-title { font-size: 15px; font-weight: 800; color: #fff; }
-        .mc-specs { font-size: 11px; color: var(--text-muted); margin: 4px 0; }
-        .mc-price { font-size: 16px; font-weight: 900; color: var(--cyan); text-shadow: 0 0 5px rgba(0, 243, 255, 0.3); }
-        .mc-price.gold { color: var(--gold); text-shadow: 0 0 5px rgba(255, 204, 0, 0.3); }
+        .mc-title { font-size: 14px; font-weight: 800; color: #fff; }
+        .mc-specs { font-size: 10px; color: var(--text-muted); margin: 3px 0; }
+        .mc-price { font-size: 15px; font-weight: 900; color: var(--cyan); }
+        .mc-price.gold { color: var(--gold); }
 
         /* Кнопки */
-        .btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 10px 15px; font-weight: 800; font-size: 12px; color: #fff; cursor: pointer; transition: 0.2s; text-align: center; }
+        .btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 10px 15px; font-weight: 800; font-size: 12px; color: #fff; cursor: pointer; transition: 0.2s; text-align: center; }
         .btn:active { transform: translateY(2px); }
         .btn:disabled { opacity: 0.3; pointer-events: none; }
-        .btn-cyan { background: rgba(0, 243, 255, 0.15); border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
-        .btn-green { background: rgba(0, 255, 102, 0.15); border-color: var(--green); color: var(--green); box-shadow: 0 0 10px rgba(0, 255, 102, 0.2); }
-        .btn-gold { background: rgba(255, 204, 0, 0.15); border-color: var(--gold); color: var(--gold); box-shadow: 0 0 10px rgba(255, 204, 0, 0.2); }
-        .btn-red { background: rgba(255, 0, 51, 0.15); border-color: var(--red); color: var(--red); }
+        .btn-cyan { background: rgba(6, 182, 212, 0.2); border-color: var(--cyan); color: var(--cyan); }
+        .btn-green { background: rgba(34, 197, 94, 0.2); border-color: var(--green); color: var(--green); }
+        .btn-gold { background: rgba(234, 179, 8, 0.2); border-color: var(--gold); color: var(--gold); }
+        .btn-red { background: rgba(239, 68, 68, 0.2); border-color: var(--red); color: var(--red); }
 
         /* Мастерская */
         .workbench { display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center; padding-top: 10px; }
-        .pedestal { width: 100%; height: 40px; background: linear-gradient(to bottom, rgba(0,243,255,0.2), transparent); border-top: 2px solid var(--cyan); border-radius: 50%; margin-top: -20px; box-shadow: 0 -10px 20px rgba(0,243,255,0.2); }
+        .pedestal { width: 100%; height: 30px; background: linear-gradient(to bottom, rgba(6,182,212,0.2), transparent); border-top: 2px solid var(--cyan); border-radius: 50%; margin-top: -15px; }
         
-        .repair-step { background: rgba(0,0,0,0.4); border-radius: 16px; padding: 15px; width: 100%; border: 1px solid var(--border); }
+        .repair-step { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 15px; width: 100%; border: 1px solid var(--border); }
         .step-title { font-weight: 800; font-size: 14px; margin-bottom: 8px; color: var(--cyan); }
         .step-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
         
         .risk-bar { width: 100%; height: 8px; background: #000; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 10px; }
         .risk-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--gold), var(--red)); transition: 0.3s; }
 
-        /* Магазин деталей */
-        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .part-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 12px; text-align: center; transition: 0.2s; }
-        .part-card:hover { border-color: var(--cyan); }
-        .part-icon { font-size: 32px; margin-bottom: 8px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
-        .part-name { font-size: 13px; font-weight: 800; }
-        .part-desc { font-size: 10px; color: var(--text-muted); margin: 4px 0; }
-        .part-price { font-size: 14px; font-weight: 900; color: var(--cyan); margin-top: 8px; }
-
-        /* Квесты */
-        .quest-card { background: linear-gradient(135deg, rgba(255,204,0,0.1), transparent); border: 1px solid rgba(255,204,0,0.3); border-radius: 16px; padding: 15px; margin-bottom: 10px; }
-        .quest-title { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 5px; }
-        .quest-progress { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
-        .quest-reward { font-size: 12px; font-weight: 900; color: var(--gold); text-shadow: 0 0 5px rgba(255,204,0,0.3); }
+        /* Магазин */
+        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .part-card { background: rgba(30, 41, 59, 0.6); border: 1px solid var(--border); border-radius: 16px; padding: 10px; text-align: center; }
+        .part-icon { font-size: 28px; margin-bottom: 4px; }
+        .part-name { font-size: 12px; font-weight: 800; }
+        .part-price { font-size: 13px; font-weight: 900; color: var(--cyan); margin-top: 6px; }
 
         /* Чат */
         .chat-box { background: rgba(0,0,0,0.4); border-radius: 16px; padding: 12px; height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--border); margin-bottom: 10px; }
         .msg { max-width: 85%; padding: 8px 12px; border-radius: 16px; font-size: 12px; line-height: 1.4; }
-        .msg.seller { background: rgba(255,255,255,0.1); align-self: flex-start; border-bottom-left-radius: 4px; }
-        .msg.me { background: rgba(0, 243, 255, 0.2); border: 1px solid rgba(0,243,255,0.3); align-self: flex-end; border-bottom-right-radius: 4px; color: #b3f0ff; }
-        .msg.friend { background: rgba(176, 66, 255, 0.2); border: 1px solid rgba(176, 66, 255, 0.3); align-self: flex-start; border-bottom-left-radius: 4px; color: #e0b3ff; }
+        .msg.seller { background: rgba(51, 65, 85, 0.8); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg.me { background: rgba(6, 182, 212, 0.2); border: 1px solid rgba(6, 182, 212, 0.4); align-self: flex-end; border-bottom-right-radius: 4px; color: #a5f3fc; }
+        .msg.friend { background: rgba(167, 139, 250, 0.2); border: 1px solid rgba(167, 139, 250, 0.4); align-self: flex-start; border-bottom-left-radius: 4px; color: #ddd6fe; }
 
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0, 243, 255, 0.9); color: #000; padding: 10px 24px; border-radius: 20px; font-weight: 900; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,243,255,0.4); }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--cyan); color: #000; padding: 10px 24px; border-radius: 20px; font-weight: 900; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 1000; box-shadow: 0 10px 30px rgba(6,182,212,0.4); }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(10px); }
+        
+        .ws-list-item { display: flex; justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.8); padding: 12px; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border); cursor: pointer; }
+        .ws-list-item:active { border-color: var(--cyan); }
     </style>
 </head>
 <body>
 
 <div class="game">
     <div class="header">
-        <div class="logo">ПЕРЕКУП IMBА</div>
+        <div class="logo">ПЕРЕКУП УЛЬТРА</div>
         <div class="stats">
             <div class="stat money">💵 <span id="ui-money">0</span></div>
             <div class="stat gold">🪙 <span id="ui-gold">0</span></div>
@@ -148,7 +142,7 @@
     <div class="tabs">
         <div class="tab active" data-tab="market">🏪 Рынок</div>
         <div class="tab" data-tab="premium">💎 Премиум</div>
-        <div class="tab" data-tab="workshop">🔧 Верстак</div>
+        <div class="tab" data-tab="workshop">🔧 Мастерская</div>
         <div class="tab" data-tab="shop">🛒 Детали</div>
         <div class="tab" data-tab="quests">📋 Квесты</div>
     </div>
@@ -159,44 +153,51 @@
 <div class="toast" id="toast">Уведомление</div>
 
 <script>
-// ================= ДАННЫЕ =================
+// ================= БАЗА ДАННЫХ =================
+// Цены подняты
 const PHONES_NORMAL = [
-    { name: 'iPhone 7', brand: 'Apple', price: 6000, specs: '32GB, трещина', risk: 0.12, type: 'phone' },
-    { name: 'Samsung A10', brand: 'Samsung', price: 5500, specs: '32GB, разбит экран', risk: 0.15, type: 'phone' },
-    { name: 'Xiaomi Redmi 8', brand: 'Xiaomi', price: 7000, specs: '64GB, не включается', risk: 0.18, type: 'phone' },
-    { name: 'Honor 8X', brand: 'Honor', price: 8500, specs: '128GB, батарея', risk: 0.10, type: 'phone' },
-    { name: 'iPhone XR', brand: 'Apple', price: 18000, specs: '64GB, FaceID', risk: 0.08, type: 'phone' }
+    { name: 'iPhone 7', brand: 'Apple', price: 8500, specs: '32GB, трещина', risk: 0.16, type: 'phone' },
+    { name: 'Samsung A10', brand: 'Samsung', price: 7000, specs: '32GB, разбит экран', risk: 0.19, type: 'phone' },
+    { name: 'Xiaomi Redmi 8', brand: 'Xiaomi', price: 9500, specs: '64GB, не вкл', risk: 0.22, type: 'phone' },
+    { name: 'Honor 8X', brand: 'Honor', price: 11000, specs: '128GB, АКБ', risk: 0.14, type: 'phone' },
+    { name: 'iPhone XR', brand: 'Apple', price: 24000, specs: '64GB, FaceID', risk: 0.12, type: 'phone' },
+    { name: 'iPhone 11', brand: 'Apple', price: 32000, specs: '128GB, оригинал', risk: 0.10, type: 'phone' },
+    { name: 'Samsung S21', brand: 'Samsung', price: 35000, specs: '256GB, AMOLED', risk: 0.09, type: 'phone' }
 ];
 
 const PHONES_PREMIUM = [
-    { name: 'iPhone 14 Pro', brand: 'Apple', price: 80000, specs: '256GB, оригинал', risk: 0.06, type: 'phone', cost: 20 },
-    { name: 'Samsung S23 Ultra', brand: 'Samsung', price: 95000, specs: '512GB, AMOLED', risk: 0.05, type: 'phone', cost: 25 },
-    { name: 'iPad Pro 11"', brand: 'Apple', price: 60000, specs: '128GB, M1', risk: 0.08, type: 'tablet', cost: 15 },
-    { name: 'Xiaomi Pad 6', brand: 'Xiaomi', price: 40000, specs: '256GB, 144Hz', risk: 0.10, type: 'tablet', cost: 10 }
+    { name: 'iPhone 15 Pro Max', brand: 'Apple', price: 120000, specs: '256GB, Titanium', risk: 0.08, type: 'phone', cost: 30 },
+    { name: 'Samsung S24 Ultra', brand: 'Samsung', price: 135000, specs: '512GB, S-Pen', risk: 0.07, type: 'phone', cost: 35 },
+    { name: 'iPad Pro 12.9"', brand: 'Apple', price: 90000, specs: '256GB, M2', risk: 0.10, type: 'tablet', cost: 25 },
+    { name: 'Xiaomi Pad 6 Pro', brand: 'Xiaomi', price: 55000, specs: '256GB, 144Hz', risk: 0.12, type: 'tablet', cost: 15 }
 ];
 
+// Больше деталей
 const PARTS_SHOP = [
-    { id: 'screwdriver', name: 'Отвёртка', icon: '🪛', price: 1000, desc: 'Нужна для разборки' },
-    { id: 'screen', name: 'Экран', icon: '📱', price: 3000, desc: 'Замена дисплея' },
-    { id: 'battery', name: 'Батарея', icon: '🔋', price: 2000, desc: 'Замена АКБ' },
-    { id: 'camera', name: 'Камера', icon: '📷', price: 2500, desc: 'Замена модуля' }
+    { id: 'screwdriver', name: 'Отвёртка', icon: '🪛', price: 1500, desc: 'Нужна для разборки' },
+    { id: 'screen', name: 'Экран', icon: '📱', price: 4500, desc: 'Дисплей' },
+    { id: 'battery', name: 'Батарея', icon: '🔋', price: 2500, desc: 'Аккумулятор' },
+    { id: 'camera', name: 'Камера', icon: '📷', price: 3500, desc: 'Модуль' },
+    { id: 'charging', name: 'Разъём', icon: '🔌', price: 1500, desc: 'Type-C/Lightning' },
+    { id: 'back_glass', name: 'Задняя крышка', icon: '🛡️', price: 2000, desc: 'Стекло' },
+    { id: 'speaker', name: 'Динамик', icon: '🔊', price: 1800, desc: 'Звук' }
 ];
 
-const SELLER_NAMES = ['Алексей', 'Андрей', 'Дмитрий', 'Сергей', 'Павел', 'Ирина', 'Максим', 'Ольга'];
+const SELLER_NAMES = ['Алексей', 'Андрей', 'Дмитрий', 'Сергей', 'Павел', 'Ирина', 'Максим', 'Ольга', 'Елена', 'Виктор'];
 
 // ================= СОСТОЯНИЕ =================
 let state = {
     money: 105000,
-    gold: 15,
+    gold: 20,
     level: 1,
     xp: 0,
-    xpNext: 1000,
+    xpNext: 1500,
     currentTab: 'market',
     
-    inventory: { screwdriver: 0, screen: 0, battery: 0, camera: 0 },
+    inventory: { screwdriver: 0, screen: 0, battery: 0, camera: 0, charging: 0, back_glass: 0, speaker: 0 },
     
-    activePhone: null,
-    repairStage: 0, 
+    workshopPhones: [], // До 5 телефонов
+    selectedPhoneId: null, // ID телефона, который чиним прямо сейчас
     
     marketListings: [],
     activeChat: null,
@@ -204,10 +205,11 @@ let state = {
     offersCount: 0,
     
     friendBorrowed: false,
-    friendChat: [{ sender: 'friend', text: 'Здарова, брат! Нужны деньги? Обращайся.' }],
+    friendChat: [{ sender: 'friend', text: 'Здарова, брат! Нужны деньги на закуп? Обращайся.' }],
 
     quests: [],
-    lastQuestReset: 0
+    lastQuestReset: 0,
+    nextId: 1
 };
 
 // ================= УТИЛИТЫ =================
@@ -229,9 +231,9 @@ function addXP(amount) {
     saveGame();
 }
 
-function saveGame() { localStorage.setItem('perekup_imba_v2', JSON.stringify(state)); }
+function saveGame() { localStorage.setItem('perekup_ultra_v3', JSON.stringify(state)); }
 function loadGame() {
-    const saved = localStorage.getItem('perekup_imba_v2');
+    const saved = localStorage.getItem('perekup_ultra_v3');
     if (saved) state = JSON.parse(saved);
     if (!state.marketListings || state.marketListings.length === 0) generateMarket();
     checkQuests();
@@ -242,9 +244,9 @@ function checkQuests() {
     const now = Date.now();
     if (state.quests.length === 0 || (now - state.lastQuestReset > 86400000)) {
         state.quests = [
-            { id: 1, desc: 'Продать 15 устройств', target: 15, current: 0, reward: 20, type: 'sell' },
-            { id: 2, desc: 'Заработать 150 000 ₽', target: 150000, current: 0, reward: 30, type: 'earn' },
-            { id: 3, desc: 'Купить 5 телефонов', target: 5, current: 0, reward: 15, type: 'buy' }
+            { id: 1, desc: 'Продать 20 устройств', target: 20, current: 0, reward: 25, type: 'sell' },
+            { id: 2, desc: 'Заработать 250 000 ₽', target: 250000, current: 0, reward: 40, type: 'earn' },
+            { id: 3, desc: 'Купить 10 телефонов', target: 10, current: 0, reward: 20, type: 'buy' }
         ];
         state.lastQuestReset = now;
         saveGame();
@@ -270,7 +272,7 @@ function generateMarket() {
         const base = PHONES_NORMAL[Math.floor(Math.random() * PHONES_NORMAL.length)];
         state.marketListings.push({
             ...base, id: Date.now() + i,
-            sellerPrice: Math.floor(base.price * (0.8 + Math.random() * 0.4)),
+            sellerPrice: Math.floor(base.price * (0.85 + Math.random() * 0.3)),
             sellerName: SELLER_NAMES[Math.floor(Math.random() * SELLER_NAMES.length)]
         });
     }
@@ -289,9 +291,7 @@ function renderModel(brand, isTablet = false) {
         <div class="device-model">
             <div class="phone-3d ${isTablet ? 'tablet' : ''}">
                 <div class="p-screen"><div class="p-logo">${brand}</div></div>
-                <div class="p-cam">
-                    <div class="p-lens"></div><div class="p-lens"></div><div class="p-lens"></div>
-                </div>
+                <div class="p-cam"><div class="p-lens"></div><div class="p-lens"></div></div>
             </div>
         </div>
     `;
@@ -313,7 +313,7 @@ function render() {
 
 // --- Рынок ---
 function renderMarket(screen) {
-    let html = `<h3 style="margin-bottom:12px; font-size:16px;">🏪 Рынок (Обычный)</h3>`;
+    let html = `<h3 style="margin-bottom:12px; font-size:15px;">🏪 Рынок</h3>`;
     state.marketListings.forEach(item => {
         html += `
             <div class="market-card" onclick="openChat('market', ${item.id})">
@@ -336,14 +336,14 @@ function renderPremium(screen) {
     if (state.level < 5) {
         return screen.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--text-muted);">
             <div style="font-size:50px; margin-bottom:15px; filter: grayscale(1);">💎</div>
-            <h3>Премиум рынок закрыт</h3><br>Достигните 5 уровня, чтобы покупать планшеты и флагманы за монеты 🪙
+            <h3>Премиум рынок закрыт</h3><br>Достигните 5 уровня.
         </div>`;
     }
-    let html = `<h3 style="margin-bottom:12px; font-size:16px; color:var(--gold);">💎 Премиум Рынок</h3>`;
+    let html = `<h3 style="margin-bottom:12px; font-size:15px; color:var(--gold);">💎 Премиум Рынок</h3>`;
     PHONES_PREMIUM.forEach(item => {
-        const canBuy = state.gold >= item.cost && !state.activePhone;
+        const canBuy = state.gold >= item.cost && state.workshopPhones.length < 5;
         html += `
-            <div class="market-card" style="border-color: rgba(255,204,0,0.3);">
+            <div class="market-card" style="border-color: rgba(234,179,8,0.3);">
                 ${renderModel(item.brand, item.type === 'tablet')}
                 <div class="mc-info">
                     <div class="mc-title">${item.name} ${item.type==='tablet'?'📟':''}</div>
@@ -357,81 +357,112 @@ function renderPremium(screen) {
     screen.innerHTML = html;
 }
 
-// --- Мастерская ---
+// --- Мастерская (Список из 5 телефонов или ремонт одного) ---
 function renderWorkshop(screen) {
-    if (!state.activePhone) {
+    if (state.workshopPhones.length === 0) {
         return screen.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--text-muted);">
             <div style="font-size:50px; margin-bottom:15px;">🔧</div>
-            <h3>Верстак пуст</h3><br>Купи телефон на рынке, чтобы начать ремонт.
+            <h3>Мастерская пуста</h3><br>Купи телефон на рынке, чтобы начать ремонт.
         </div>`;
     }
 
-    const p = state.activePhone;
-    const isTablet = p.type === 'tablet';
+    // Если выбран конкретный телефон для ремонта
+    if (state.selectedPhoneId) {
+        const p = state.workshopPhones.find(x => x.id === state.selectedPhoneId);
+        if (!p) { state.selectedPhoneId = null; return render(); }
+
+        const isTablet = p.type === 'tablet';
+        
+        // +4% к риску по твоей просьбе
+        let currentRisk = p.risk + 0.04;
+        if (p.repairStage === 2) currentRisk += 0.05; 
+
+        let html = `<div class="workbench">`;
+        html += `<div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+            <button class="btn" style="padding:5px 10px;" onclick="state.selectedPhoneId=null; render();">← Назад</button>
+            <h3 style="font-size:16px;">${p.name}</h3>
+        </div>`;
+        
+        html += `<div class="${p.repairStage > 0 ? 'opened' : ''}">${renderModel(p.brand, isTablet)}</div>`;
+        html += `<div class="pedestal"></div>`;
+
+        html += `<div class="repair-step">
+            <div class="step-title">
+                ${p.repairStage === 0 ? 'Шаг 1: Разборка' : 
+                  p.repairStage === 1 ? 'Шаг 2: Замена' : 
+                  p.repairStage === 2 ? 'Шаг 3: Сборка' : 
+                  p.repairStage === 3 ? '✅ Готов!' : '💥 СЛОМАН'}
+            </div>`;
+
+        if (p.repairStage >= 0 && p.repairStage < 3) {
+            html += `<div class="risk-bar"><div class="risk-fill" style="width:${Math.min(100, currentRisk*100)}%"></div></div>`;
+            html += `<div class="step-desc" style="color:${currentRisk > 0.2 ? 'var(--gold)' : 'var(--green)'}">Риск: ${Math.round(currentRisk*100)}%</div>`;
+        }
+
+        if (p.repairStage === 0) {
+            if (state.inventory.screwdriver > 0) {
+                html += `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0.0)">🪛 Открутить</button>`;
+            } else {
+                html += `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Нужна отвёртка!</button>`;
+            }
+        } else if (p.repairStage === 1) {
+            const hasParts = state.inventory.screen > 0 || state.inventory.battery > 0 || state.inventory.camera > 0 || state.inventory.charging > 0 || state.inventory.back_glass > 0 || state.inventory.speaker > 0;
+            if (hasParts) {
+                html += `<button class="btn btn-cyan" style="width:100%;" onclick="usePart()">⚙️ Установить деталь</button>`;
+            } else {
+                html += `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Нет запчастей!</button>`;
+            }
+        } else if (p.repairStage === 2) {
+            html += `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0.05)">🔨 Собрать</button>`;
+        } else if (p.repairStage === 3) {
+            const sellPrice = Math.floor(p.price * 1.9) + (isTablet ? 20000 : 0);
+            html += `<button class="btn btn-green" style="width:100%; font-size:14px;" onclick="sellRepaired(${sellPrice})">💰 Продать за ${fmt(sellPrice)} ₽</button>`;
+        }
+
+        if (p.repairStage === -1) {
+            html = `<div class="workbench"><h2 style="color:var(--red);">💔 ${p.name}</h2>
+            <div class="phone-3d" style="filter: grayscale(1);"><div class="p-screen"></div></div>
+            <p style="margin:20px 0; color:var(--text-muted);">Сломан.</p>
+            <button class="btn btn-red" style="width:100%;" onclick="scrapPhone()">🗑️ Сдать (3000 ₽)</button></div>`;
+        }
+        html += `</div>`;
+        screen.innerHTML = html;
+        return;
+    }
+
+    // Если телефон не выбран, показываем СПИСОК из 5 телефонов
+    let html = `<h3 style="margin-bottom:12px; font-size:16px;">🔧 Мастерская (${state.workshopPhones.length}/5)</h3>`;
+    html += `<p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Нажми на телефон, чтобы начать ремонт.</p>`;
     
-    // Честный риск
-    let currentRisk = p.risk;
-    if (state.repairStage === 2) currentRisk += 0.05; // Риск при сборке чуть выше
-
-    let html = `<div class="workbench">`;
-    html += `<h3>${p.name}</h3>`;
-    html += `<div class="${state.repairStage > 0 ? 'opened' : ''}">${renderModel(p.brand, isTablet)}</div>`;
-    html += `<div class="pedestal"></div>`;
-
-    // Статус шага
-    html += `<div class="repair-step">
-        <div class="step-title">
-            ${state.repairStage === 0 ? 'Шаг 1: Разборка корпуса' : 
-              state.repairStage === 1 ? 'Шаг 2: Замена детали' : 
-              state.repairStage === 2 ? 'Шаг 3: Сборка' : 
-              state.repairStage === 3 ? '✅ Готов к продаже!' : '💥 СЛОМАН'}
-        </div>`;
-
-    if (state.repairStage >= 0 && state.repairStage < 3) {
-        html += `<div class="risk-bar"><div class="risk-fill" style="width:${Math.min(100, currentRisk*100)}%"></div></div>`;
-        html += `<div class="step-desc" style="color:${currentRisk > 0.15 ? 'var(--gold)' : 'var(--green)'}">Риск сломать: ${Math.round(currentRisk*100)}%</div>`;
-    }
-
-    // Кнопки
-    if (state.repairStage === 0) {
-        if (state.inventory.screwdriver > 0) {
-            html += `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0.0)">🪛 Открутить винты</button>`;
-        } else {
-            html += `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Нужна отвёртка! (в магазине)</button>`;
-        }
-    } 
-    else if (state.repairStage === 1) {
-        const hasParts = state.inventory.screen > 0 || state.inventory.battery > 0 || state.inventory.camera > 0;
-        if (hasParts) {
-            html += `<button class="btn btn-cyan" style="width:100%;" onclick="usePart()">⚙️ Установить деталь</button>`;
-        } else {
-            html += `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Нет запчастей! (в магазине)</button>`;
-        }
-    } 
-    else if (state.repairStage === 2) {
-        html += `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0.05)">🔨 Собрать телефон</button>`;
-    } 
-    else if (state.repairStage === 3) {
-        const sellPrice = Math.floor(p.price * 1.8) + (isTablet ? 15000 : 0);
-        html += `<button class="btn btn-green" style="width:100%; font-size:14px;" onclick="sellRepaired(${sellPrice})">💰 Продать за ${fmt(sellPrice)} ₽</button>`;
-    }
-
-    html += `</div>`;
-
-    if (state.repairStage === -1) {
-        html = `<div class="workbench"><h2 style="color:var(--red);">💔 ${p.name}</h2>
-        <div class="phone-3d" style="filter: grayscale(1) brightness(0.5);"><div class="p-screen"></div></div>
-        <p style="margin:20px 0; color:var(--text-muted);">Восстановлению не подлежит.</p>
-        <button class="btn btn-red" style="width:100%;" onclick="scrapPhone()">🗑️ Сдать на запчасти (3000 ₽)</button></div>`;
-    }
-
-    html += `</div>`;
+    state.workshopPhones.forEach(p => {
+        let status = p.repairStage === -1 ? '💥 Сломан' : 
+                     p.repairStage === 3 ? '✅ Готов к продаже' : 
+                     `⚙️ Этап ${p.repairStage + 1}/3`;
+        
+        html += `
+            <div class="ws-list-item" onclick="selectPhone(${p.id})">
+                <div style="display:flex; gap:10px; align-items:center;">
+                    ${renderModel(p.brand, p.type === 'tablet')}
+                    <div>
+                        <div style="font-weight:800; font-size:14px;">${p.name}</div>
+                        <div style="font-size:11px; color:var(--cyan);">${status}</div>
+                    </div>
+                </div>
+                <div style="font-size:20px;">➔</div>
+            </div>
+        `;
+    });
     screen.innerHTML = html;
+}
+
+function selectPhone(id) {
+    state.selectedPhoneId = id;
+    render();
 }
 
 // --- Магазин Деталей ---
 function renderShop(screen) {
-    let html = `<h3 style="margin-bottom:12px; font-size:16px;">🛒 Магазин запчастей</h3>`;
+    let html = `<h3 style="margin-bottom:12px; font-size:16px;">🛒 Магазин деталей</h3>`;
     html += `<div class="shop-grid">`;
     PARTS_SHOP.forEach(part => {
         const owned = state.inventory[part.id] || 0;
@@ -439,9 +470,8 @@ function renderShop(screen) {
             <div class="part-card">
                 <div class="part-icon">${part.icon}</div>
                 <div class="part-name">${part.name} ${owned > 0 ? `<span style="color:var(--green)">(${owned})</span>` : ''}</div>
-                <div class="part-desc">${part.desc}</div>
                 <div class="part-price">${fmt(part.price)} ₽</div>
-                <button class="btn btn-cyan" style="width:100%; margin-top:8px; padding:6px; font-size:10px;" onclick="buyPart('${part.id}', ${part.price})">Купить</button>
+                <button class="btn btn-cyan" style="width:100%; margin-top:6px; padding:6px; font-size:10px;" onclick="buyPart('${part.id}', ${part.price})">Купить</button>
             </div>
         `;
     });
@@ -516,8 +546,6 @@ function renderChat(screen) {
 window.closeChat = function() { state.activeChat = null; render(); };
 
 // ================= ДЕЙСТВИЯ =================
-
-// ИСПРАВЛЕННЫЙ ТОРГ
 window.bargain = function() {
     const t = state.chatTarget;
     state.offersCount++;
@@ -525,53 +553,49 @@ window.bargain = function() {
     state.chatHistory.push({ sender: 'me', text: `Может, отдашь за ${fmt(newPrice)}?` });
     
     const roll = Math.random();
-    
     if (roll < 0.5) { 
-        // 50% - Соглашается
         t.sellerPrice = newPrice;
-        state.chatHistory.push({ sender: 'seller', text: `Ладно, договорились. Забирай за ${fmt(newPrice)}.` });
+        state.chatHistory.push({ sender: 'seller', text: `Ладно, забирай.` });
     } else if (roll < 0.85) { 
-        // 35% - Отказывается
-        state.chatHistory.push({ sender: 'seller', text: `Нет, брат, это слишком мало. Я лучше подожду.` });
+        state.chatHistory.push({ sender: 'seller', text: `Нет, слишком мало.` });
     } else {
-        // 15% - Блокирует
-        state.chatHistory.push({ sender: 'seller', text: `Всё, ты меня достал. Блокирую.` });
+        state.chatHistory.push({ sender: 'seller', text: `Всё, блокирую.` });
         state.marketListings = state.marketListings.filter(x => x.id !== t.id);
-        showToast('🚫 Продавец заблокировал тебя!');
+        showToast('🚫 Заблокировал!');
         setTimeout(() => { state.activeChat = null; render(); }, 1500);
     }
-    saveGame();
-    render();
+    saveGame(); render();
 };
 
-// Покупка на рынке
+// Покупка на рынке (в мастерскую)
 window.buyFromMarket = function() {
     const t = state.chatTarget;
     if (state.money < t.sellerPrice) return showToast('Мало денег!');
-    if (state.activePhone) return showToast('Верстак занят!');
+    if (state.workshopPhones.length >= 5) return showToast('Мастерская заполнена (макс 5)!');
     
     state.money -= t.sellerPrice;
-    state.activePhone = { ...t };
-    state.repairStage = 0;
+    state.workshopPhones.push({ ...t, id: state.nextId++, repairStage: 0 });
     state.marketListings = state.marketListings.filter(x => x.id !== t.id);
     state.activeChat = null;
     
     updateQuest('buy', 1);
-    showToast('Телефон куплен!');
+    showToast('Куплено в мастерскую!');
     state.currentTab = 'workshop';
+    state.selectedPhoneId = null;
     saveGame(); render();
 };
 
 // Покупка премиума
 window.buyPremium = function(name) {
     const p = PHONES_PREMIUM.find(x => x.name === name);
-    if (state.gold < p.cost || state.activePhone) return;
+    if (state.gold < p.cost) return;
+    if (state.workshopPhones.length >= 5) return showToast('Мастерская заполнена!');
     
     state.gold -= p.cost;
-    state.activePhone = { ...p };
-    state.repairStage = 0;
-    showToast('Премиум устройство куплено!');
+    state.workshopPhones.push({ ...p, id: state.nextId++, repairStage: 0 });
+    showToast('Премиум куплен!');
     state.currentTab = 'workshop';
+    state.selectedPhoneId = null;
     saveGame(); render();
 };
 
@@ -586,15 +610,15 @@ window.buyPart = function(id, price) {
 
 // Ремонт
 window.doRepair = function(extraRisk) {
-    const p = state.activePhone;
-    let risk = p.risk + extraRisk;
+    const p = state.workshopPhones.find(x => x.id === state.selectedPhoneId);
+    let risk = p.risk + 0.04 + extraRisk; // +4% к риску
     
     if (Math.random() < risk) {
-        state.repairStage = -1;
+        p.repairStage = -1;
         showToast('💥 Хруст... Сломал!');
     } else {
-        state.repairStage++;
-        if (state.repairStage === 3) showToast('✅ Телефон собран!');
+        p.repairStage++;
+        if (p.repairStage === 3) showToast('✅ Собран!');
         else showToast('⚙️ Успешно.');
     }
     saveGame(); render();
@@ -602,14 +626,19 @@ window.doRepair = function(extraRisk) {
 
 // Использование детали
 window.usePart = function() {
+    const p = state.workshopPhones.find(x => x.id === state.selectedPhoneId);
     let usedPart = null;
-    if (state.inventory.screen > 0) usedPart = 'screen';
-    else if (state.inventory.battery > 0) usedPart = 'battery';
-    else if (state.inventory.camera > 0) usedPart = 'camera';
+    
+    // Ищем любую имеющуюся деталь
+    for (let key in state.inventory) {
+        if (key !== 'screwdriver' && state.inventory[key] > 0) {
+            usedPart = key; break;
+        }
+    }
     
     if (usedPart) {
         state.inventory[usedPart]--;
-        state.repairStage = 2; 
+        p.repairStage = 2; 
         showToast('Деталь заменена!');
         saveGame(); render();
     }
@@ -618,13 +647,14 @@ window.usePart = function() {
 // Продажа
 window.sellRepaired = function(price) {
     state.money += price;
-    addXP(state.activePhone.type === 'tablet' ? 300 : 150);
+    addXP(state.workshopPhones.find(x => x.id === state.selectedPhoneId).type === 'tablet' ? 400 : 200);
     updateQuest('sell', 1);
     updateQuest('earn', price);
     
     showToast(`💰 Продано за ${fmt(price)}!`);
-    state.activePhone = null;
-    state.currentTab = 'market';
+    state.workshopPhones = state.workshopPhones.filter(x => x.id !== state.selectedPhoneId);
+    state.selectedPhoneId = null;
+    state.currentTab = 'workshop';
     saveGame(); render();
 };
 
@@ -633,16 +663,17 @@ window.scrapPhone = function() {
     state.money += 3000;
     addXP(50);
     showToast('💸 Сдано за 3000 ₽');
-    state.activePhone = null;
-    state.currentTab = 'market';
+    state.workshopPhones = state.workshopPhones.filter(x => x.id !== state.selectedPhoneId);
+    state.selectedPhoneId = null;
+    state.currentTab = 'workshop';
     saveGame(); render();
 };
 
 // ДРУГ
 window.borrow = function() {
     state.money += 10000; state.friendBorrowed = true;
-    state.chatHistory.push({ sender: 'me', text: 'Выручай, брат!' });
-    state.chatHistory.push({ sender: 'friend', text: 'Кидаю 10к. Верни потом!' });
+    state.chatHistory.push({ sender: 'me', text: 'Выручай!' });
+    state.chatHistory.push({ sender: 'friend', text: 'Кидаю 10к.' });
     state.friendChat = [...state.chatHistory];
     saveGame(); render();
 };
@@ -650,7 +681,7 @@ window.borrow = function() {
 window.repay = function() {
     state.money -= 10000; state.friendBorrowed = false;
     state.chatHistory.push({ sender: 'me', text: 'Держи долг!' });
-    state.chatHistory.push({ sender: 'friend', text: 'Красава! Обращайся.' });
+    state.chatHistory.push({ sender: 'friend', text: 'О, красава!' });
     state.friendChat = [...state.chatHistory];
     saveGame(); render();
 };
@@ -659,6 +690,7 @@ window.repay = function() {
 document.querySelectorAll('.tab').forEach(t => {
     t.addEventListener('click', () => {
         state.activeChat = null;
+        state.selectedPhoneId = null; // Сбрасываем выбор при переходе
         state.currentTab = t.dataset.tab;
         render();
     });
