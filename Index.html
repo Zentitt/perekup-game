@@ -3,160 +3,364 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ПЕРЕКУП УЛЬТРА 5.1</title>
+    <title>ПЕРЕКУП ULTRA 6.0</title>
     <style>
         :root {
-            --bg: #050810;
-            --panel: rgba(18, 26, 43, 0.85);
-            --border: rgba(255, 255, 255, 0.08);
-            --cyan: #00f3ff;
+            --bg-dark: #050a14;
+            --bg-panel: rgba(15, 23, 42, 0.75);
+            --glass-border: rgba(148, 163, 184, 0.15);
+            --cyan: #00f0ff;
             --green: #00ff88;
-            --red: #ff3366;
+            --red: #ff2d55;
             --gold: #ffcc00;
-            --text: #f1f5f9;
-            --muted: #8b9eb7;
+            --purple: #a855f7;
+            --text: #e2e8f0;
+            --muted: #64748b;
             
             --r-common: #94a3b8;
             --r-rare: #3b82f6;
             --r-epic: #a855f7;
-            --r-legend: #f59e0b;
+            --r-legend: #fbbf24;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; user-select: none; }
-        body { background: radial-gradient(circle at 50% 0%, #111c2e 0%, #020408 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 10px; color: var(--text); overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, -apple-system, sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
         
-        .game { max-width: 600px; width: 100%; height: 95vh; max-height: 850px; background: var(--panel); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: 28px; padding: 15px; border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.9), inset 0 1px 0 rgba(255,255,255,0.1); display: flex; flex-direction: column; gap: 10px; }
-
-        /* HEADER */
-        .header { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.5); padding: 10px 16px; border-radius: 18px; border: 1px solid var(--border); }
-        .logo { font-weight: 900; font-size: 15px; background: linear-gradient(90deg, var(--cyan), #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; }
-        .stats { display: flex; gap: 12px; font-size: 14px; font-weight: 900; }
-        .stat.money { color: var(--green); text-shadow: 0 0 10px rgba(0,255,136,0.3); }
+        body { 
+            background: radial-gradient(circle at 50% 0%, #172554 0%, #020617 80%); 
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; 
+            padding: 10px; color: var(--text); overflow: hidden; 
+        }
         
-        .xp-bar { width: 100%; height: 4px; background: #000; border-radius: 2px; margin-top: 4px; overflow: hidden; }
-        .xp-fill { height: 100%; background: var(--cyan); width: 0%; transition: 0.3s; box-shadow: 0 0 10px var(--cyan); }
+        /* ================= MAIN CONTAINER ================= */
+        .game { 
+            max-width: 620px; width: 100%; height: 96vh; max-height: 880px; 
+            background: var(--bg-panel); backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); 
+            border-radius: 32px; padding: 16px; 
+            border: 1px solid var(--glass-border); 
+            box-shadow: 0 40px 80px -20px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.1); 
+            display: flex; flex-direction: column; gap: 12px; 
+        }
 
-        /* TABS */
-        .tabs { display: flex; gap: 5px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        /* ================= HEADER ================= */
+        .header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(0,0,0,0.6); padding: 12px 18px; 
+            border-radius: 20px; border: 1px solid var(--glass-border);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        .logo { 
+            font-weight: 900; font-size: 16px; 
+            background: linear-gradient(135deg, var(--cyan), var(--purple)); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            letter-spacing: 1.5px; filter: drop-shadow(0 0 10px rgba(0,240,255,0.3));
+        }
+        .stats { display: flex; gap: 14px; font-size: 14px; font-weight: 900; }
+        .stat.money { color: var(--green); text-shadow: 0 0 12px rgba(0,255,136,0.4); display: flex; align-items: center; gap: 4px; }
+        .stat.lvl { color: var(--gold); }
+        
+        .xp-bar { width: 100%; height: 5px; background: #000; border-radius: 3px; margin-top: 6px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0,0,0,0.8); }
+        .xp-fill { height: 100%; background: linear-gradient(90deg, var(--cyan), #fff); width: 0%; transition: 0.4s; box-shadow: 0 0 10px var(--cyan); }
+
+        /* ================= TABS ================= */
+        .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: none; }
         .tabs::-webkit-scrollbar { display: none; }
-        .tab { flex: 1; background: rgba(255,255,255,0.03); padding: 10px 5px; border-radius: 12px; text-align: center; font-size: 10px; font-weight: 800; color: var(--muted); border: 1px solid var(--border); cursor: pointer; white-space: nowrap; transition: 0.2s; }
-        .tab.active { background: rgba(0, 243, 255, 0.1); color: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 10px rgba(0,243,255,0.2); }
+        .tab { 
+            flex: 1; background: rgba(255,255,255,0.03); padding: 11px 6px; 
+            border-radius: 14px; text-align: center; font-size: 11px; font-weight: 800; 
+            color: var(--muted); border: 1px solid var(--glass-border); cursor: pointer; 
+            white-space: nowrap; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tab.active { 
+            background: rgba(0, 240, 255, 0.12); color: var(--cyan); 
+            border-color: var(--cyan); box-shadow: 0 0 20px rgba(0,240,255,0.25), inset 0 0 10px rgba(0,240,255,0.1); 
+            transform: translateY(-1px);
+        }
 
-        /* SCREEN */
-        .screen { flex: 1; background: rgba(0,0,0,0.4); border-radius: 20px; padding: 12px; overflow-y: auto; border: 1px solid var(--border); position: relative; }
-        .screen::-webkit-scrollbar { width: 4px; }
-        .screen::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        /* ================= SCREEN ================= */
+        .screen { 
+            flex: 1; background: rgba(0,0,0,0.3); border-radius: 24px; 
+            padding: 14px; overflow-y: auto; border: 1px solid var(--glass-border); 
+            position: relative; box-shadow: inset 0 4px 20px rgba(0,0,0,0.6);
+        }
+        .screen::-webkit-scrollbar { width: 3px; }
+        .screen::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.3); border-radius: 10px; }
 
-        /* ================= УЛЬТРА-МОДЕЛИ ТЕЛЕФОНОВ ================= */
-        .device-container { perspective: 1000px; display: flex; justify-content: center; align-items: center; padding: 10px; }
+        /* ================= ULTRA PHONE MODELS ================= */
+        .device-container { perspective: 1200px; display: flex; justify-content: center; align-items: center; padding: 8px; }
         
         .real-phone {
-            width: 76px; height: 155px; border-radius: 18px; position: relative;
-            background: linear-gradient(135deg, #475569, #1e293b);
-            border: 2px solid #64748b;
-            box-shadow: -10px 15px 35px rgba(0,0,0,0.8), inset 0 2px 4px rgba(255,255,255,0.3);
-            transform: rotateY(-18deg) rotateX(6deg); transition: 0.3s; overflow: hidden;
+            width: 80px; height: 165px; border-radius: 20px; position: relative;
+            background: linear-gradient(135deg, #64748b 0%, #334155 50%, #1e293b 100%);
+            border: 1.5px solid #94a3b8;
+            box-shadow: 
+                -12px 20px 40px rgba(0,0,0,0.9), 
+                inset 0 2px 4px rgba(255,255,255,0.4),
+                inset 0 -2px 4px rgba(0,0,0,0.6);
+            transform: rotateY(-20deg) rotateX(8deg); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            overflow: hidden; transform-style: preserve-3d;
         }
-        .real-phone.tablet { width: 115px; height: 150px; border-radius: 12px; }
+        .real-phone.tablet { width: 125px; height: 160px; border-radius: 12px; }
         
-        /* Цвета корпуса */
-        .real-phone.apple { background: linear-gradient(135deg, #71717a, #18181b); border-color: #a1a1aa; }
-        .real-phone.samsung { background: linear-gradient(135deg, #4338ca, #1e1b4b); border-color: #6366f1; }
-        .real-phone.xiaomi { background: linear-gradient(135deg, #9a3412, #431407); border-color: #ea580c; }
-        .real-phone.google { background: linear-gradient(135deg, #1d4ed8, #172554); border-color: #3b82f6; }
+        /* Брендовые градиенты */
+        .real-phone.apple { background: linear-gradient(135deg, #a1a1aa 0%, #52525b 40%, #18181b 100%); border-color: #d4d4d8; }
+        .real-phone.samsung { background: linear-gradient(135deg, #818cf8 0%, #4338ca 40%, #1e1b4b 100%); border-color: #a5b4fc; }
+        .real-phone.xiaomi { background: linear-gradient(135deg, #fb923c 0%, #9a3412 40%, #431407 100%); border-color: #fdba74; }
+        .real-phone.google { background: linear-gradient(135deg, #60a5fa 0%, #1d4ed8 40%, #172554 100%); border-color: #93c5fd; }
+        .real-phone.honor { background: linear-gradient(135deg, #f472b6 0%, #be185d 40%, #500724 100%); border-color: #f9a8d4; }
 
-        /* Боковые кнопки */
-        .side-btn { position: absolute; width: 2px; background: #333; border-radius: 2px; box-shadow: 1px 0 2px rgba(0,0,0,0.5); }
-        .side-btn.power { right: -2px; top: 40px; height: 30px; background: #52525b; }
-        .side-btn.vol-up { left: -2px; top: 30px; height: 20px; background: #52525b; }
-        .side-btn.vol-down { left: -2px; top: 55px; height: 20px; background: #52525b; }
+        /* Боковые кнопки (3D) */
+        .side-btn { position: absolute; width: 3px; background: linear-gradient(90deg, #71717a, #3f3f46); border-radius: 2px; box-shadow: 1px 0 3px rgba(0,0,0,0.7); }
+        .side-btn.power { right: -3px; top: 45px; height: 32px; }
+        .side-btn.vol-up { left: -3px; top: 35px; height: 22px; }
+        .side-btn.vol-down { left: -3px; top: 62px; height: 22px; }
 
         /* Экран */
-        .screen-glass { position: absolute; inset: 3px; border-radius: 15px; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .wallpaper { position: absolute; inset: 0; background: linear-gradient(45deg, #0f172a, #1e293b, #0f172a); background-size: 200% 200%; animation: bgMove 5s infinite alternate; }
+        .screen-glass { 
+            position: absolute; inset: 4px; border-radius: 16px; 
+            background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; 
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.9);
+        }
+        .wallpaper { 
+            position: absolute; inset: 0; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%); 
+            background-size: 200% 200%; animation: bgMove 6s infinite alternate; 
+        }
         @keyframes bgMove { 0% { background-position: 0% 0%; } 100% { background-position: 100% 100%; } }
         
-        .screen-glass::after { content: ''; position: absolute; top: -50%; left: -100%; width: 200%; height: 200%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent); transform: rotate(35deg); animation: shine 3.5s infinite; }
-        @keyframes shine { 0% { transform: translateX(-100%) rotate(35deg); } 25% { transform: translateX(100%) rotate(35deg); } 100% { transform: translateX(100%) rotate(35deg); } }
+        /* Свечение по краям экрана */
+        .screen-glass::before { 
+            content: ''; position: absolute; inset: 0; 
+            background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,240,255,0.15) 100%); 
+            z-index: 3; pointer-events: none;
+        }
         
-        .dynamic-island { position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 28px; height: 8px; background: #000; border-radius: 10px; z-index: 10; border: 1px solid #222; }
-        .dynamic-island::after { content: ''; position: absolute; right: 4px; top: 2px; width: 4px; height: 4px; background: #0af; border-radius: 50%; box-shadow: 0 0 4px #0af; }
+        /* Блик */
+        .screen-glass::after { 
+            content: ''; position: absolute; top: -50%; left: -100%; width: 200%; height: 200%; 
+            background: linear-gradient(to right, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%); 
+            transform: rotate(35deg); animation: shine 4s infinite; 
+        }
+        @keyframes shine { 0% { transform: translateX(-100%) rotate(35deg); } 30% { transform: translateX(100%) rotate(35deg); } 100% { transform: translateX(100%) rotate(35deg); } }
         
-        .cam-module { position: absolute; top: 8px; left: 8px; width: 34px; height: 34px; background: #09090b; border-radius: 10px; border: 1px solid #3f3f46; display: flex; flex-wrap: wrap; padding: 3px; gap: 2px; align-items: center; justify-content: center; z-index: 15; box-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
-        .lens { width: 11px; height: 11px; background: radial-gradient(circle at 30% 30%, #00f3ff, #000); border-radius: 50%; border: 1px solid #52525b; box-shadow: inset 0 0 3px #000; }
-        .lens.small { width: 7px; height: 7px; }
-        .flash { width: 4px; height: 4px; background: #fff; border-radius: 50%; box-shadow: 0 0 3px #fff; }
+        /* Dynamic Island */
+        .dynamic-island { 
+            position: absolute; top: 8px; left: 50%; transform: translateX(-50%); 
+            width: 32px; height: 10px; background: #000; border-radius: 10px; z-index: 10; 
+            border: 1px solid #18181b; box-shadow: inset 0 1px 2px rgba(255,255,255,0.05);
+        }
+        .dynamic-island::after { 
+            content: ''; position: absolute; right: 5px; top: 2.5px; width: 5px; height: 5px; 
+            background: #00f0ff; border-radius: 50%; box-shadow: 0 0 6px #00f0ff; 
+        }
         
-        .brand-logo { font-size: 20px; font-weight: 900; color: rgba(255,255,255,0.1); letter-spacing: -1px; z-index: 2; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+        /* Блок камеры (3D) */
+        .cam-module { 
+            position: absolute; top: 10px; left: 10px; width: 38px; height: 38px; 
+            background: linear-gradient(135deg, #18181b, #09090b); border-radius: 12px; 
+            border: 1px solid #3f3f46; display: flex; flex-wrap: wrap; padding: 4px; gap: 2px; 
+            align-items: center; justify-content: center; z-index: 15; 
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.9), inset 0 1px 1px rgba(255,255,255,0.1);
+        }
+        .lens { 
+            width: 12px; height: 12px; background: radial-gradient(circle at 30% 30%, #00f0ff 0%, #0369a1 40%, #000 100%); 
+            border-radius: 50%; border: 1px solid #52525b; box-shadow: inset 0 0 4px #000, 0 0 6px rgba(0,240,255,0.3); 
+        }
+        .lens.small { width: 8px; height: 8px; }
+        .flash { width: 5px; height: 5px; background: #fff; border-radius: 50%; box-shadow: 0 0 5px #fff, 0 0 10px rgba(255,255,255,0.5); }
+        
+        .brand-logo { font-size: 22px; font-weight: 900; color: rgba(255,255,255,0.12); letter-spacing: -1.5px; z-index: 2; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
 
-        /* --- АНИМАЦИЯ РЕМОНТА --- */
-        .repairing { animation: shake 0.3s infinite; box-shadow: 0 0 30px var(--cyan); border-color: var(--cyan); }
-        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 25% { transform: translate(-2px, -1px) rotate(-1deg); } 50% { transform: translate(2px, 2px) rotate(1deg); } 75% { transform: translate(-1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+        /* ================= РЕМОНТ (УЛУЧШЕННАЯ АНИМАЦИЯ) ================= */
+        .repairing { animation: shake 0.25s infinite; filter: drop-shadow(0 0 25px var(--cyan)) brightness(1.2); }
+        @keyframes shake { 
+            0% { transform: translate(1px, 1px) rotate(0deg); } 
+            25% { transform: translate(-2px, -1px) rotate(-1.5deg); } 
+            50% { transform: translate(2px, 2px) rotate(1.5deg); } 
+            75% { transform: translate(-1px, 2px) rotate(-1deg); } 
+            100% { transform: translate(1px, -2px) rotate(0deg); } 
+        }
 
-        .scan-line { position: absolute; left: 0; right: 0; height: 3px; background: var(--cyan); box-shadow: 0 0 15px var(--cyan); z-index: 99; opacity: 0; }
-        .scanning .scan-line { animation: scan 0.6s ease-in-out infinite alternate; opacity: 1; }
+        /* Лазерный сканер */
+        .scan-line { 
+            position: absolute; left: 0; right: 0; height: 4px; 
+            background: linear-gradient(90deg, transparent, var(--cyan), #fff, var(--cyan), transparent); 
+            box-shadow: 0 0 20px var(--cyan), 0 0 40px var(--cyan); 
+            z-index: 99; opacity: 0; 
+        }
+        .scanning .scan-line { animation: scan 0.8s ease-in-out infinite alternate; opacity: 1; }
         @keyframes scan { 0% { top: 5%; } 100% { top: 95%; } }
 
+        /* Глитч на экране */
+        .glitching .screen-glass { animation: glitch 0.15s infinite; }
+        @keyframes glitch { 
+            0% { transform: translate(0); filter: hue-rotate(0deg); }
+            20% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
+            40% { transform: translate(2px, -2px); filter: hue-rotate(180deg); }
+            60% { transform: translate(-2px, -2px); filter: hue-rotate(270deg); }
+            80% { transform: translate(2px, 2px); filter: hue-rotate(360deg); }
+            100% { transform: translate(0); filter: hue-rotate(0deg); }
+        }
+
+        /* Искры */
         .sparks { position: absolute; inset: 0; pointer-events: none; z-index: 100; display: flex; justify-content: center; align-items: center; opacity: 0; }
-        .spark { position: absolute; font-size: 18px; animation: fly 0.5s ease-out forwards; filter: drop-shadow(0 0 5px var(--cyan)); }
-        @keyframes fly { 0% { transform: scale(0.5) translate(0, 0); opacity: 1; } 100% { transform: scale(1.5) translate(var(--x), var(--y)); opacity: 0; } }
+        .spark { 
+            position: absolute; font-size: 20px; 
+            animation: fly 0.6s cubic-bezier(0.3, 0, 0.7, 1) forwards; 
+            filter: drop-shadow(0 0 8px var(--cyan)); 
+            z-index: 101;
+        }
+        @keyframes fly { 
+            0% { transform: scale(0.3) translate(0, 0) rotate(0deg); opacity: 1; } 
+            100% { transform: scale(1.8) translate(var(--x), var(--y)) rotate(var(--r)); opacity: 0; } 
+        }
 
-        /* MARKET GRID */
-        .market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .market-card { background: rgba(15, 23, 42, 0.9); border-radius: 16px; padding: 12px 8px; border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; text-align: center; transition: 0.1s; position: relative; }
-        .market-card:active { transform: scale(0.96); }
-        .mc-title { font-size: 11px; font-weight: 900; margin-top: 6px; color: #fff; }
-        .mc-price { font-size: 13px; font-weight: 900; color: var(--cyan); margin-top: 4px; text-shadow: 0 0 8px rgba(0,243,255,0.4); }
-
-        /* БЕЙДЖИ РЕДКОСТИ */
-        .mc-rarity { font-size: 9px; font-weight: 900; padding: 2px 6px; border-radius: 4px; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .rar-common .mc-rarity { background: rgba(148,163,184,0.2); color: var(--r-common); border: 1px solid rgba(148,163,184,0.3); }
-        .rar-rare .mc-rarity { background: rgba(59,130,246,0.2); color: var(--r-rare); border: 1px solid rgba(59,130,246,0.3); }
-        .rar-epic .mc-rarity { background: rgba(168,85,247,0.2); color: var(--r-epic); border: 1px solid rgba(168,85,247,0.3); }
-        .rar-legend .mc-rarity { background: rgba(245,158,11,0.2); color: var(--r-legend); border: 1px solid rgba(245,158,11,0.3); box-shadow: 0 0 10px rgba(245,158,11,0.2); }
-
-        /* КНОПКИ */
-        .btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 12px; padding: 10px 15px; font-weight: 800; font-size: 12px; color: #fff; cursor: pointer; transition: 0.2s; text-align: center; }
-        .btn:active { transform: scale(0.95); }
-        .btn:disabled { opacity: 0.3; pointer-events: none; }
-        .btn-cyan { background: rgba(0, 243, 255, 0.1); border-color: var(--cyan); color: var(--cyan); }
-        .btn-green { background: rgba(0, 255, 136, 0.1); border-color: var(--green); color: var(--green); }
-        .btn-red { background: rgba(255, 51, 102, 0.1); border-color: var(--red); color: var(--red); }
-
-        /* МАСТЕРСКАЯ */
-        .workbench { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .repair-panel { background: rgba(0,0,0,0.5); border-radius: 16px; padding: 15px; width: 100%; border: 1px solid var(--border); text-align: center; position: relative; overflow: hidden; }
-        .risk-bar { width: 100%; height: 6px; background: #000; border-radius: 3px; margin: 10px 0; overflow: hidden; border: 1px solid #333; }
-        .risk-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--gold), var(--red)); }
+        /* ================= MARKET GRID ================= */
+        .market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .market-card { 
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95)); 
+            border-radius: 20px; padding: 14px 10px; border: 1.5px solid var(--glass-border); 
+            display: flex; flex-direction: column; align-items: center; text-align: center; 
+            transition: all 0.2s; position: relative; overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        .market-card:active { transform: scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.8); }
         
-        .ws-list-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; margin-bottom: 8px; border: 1px solid var(--border); cursor: pointer; }
+        /* Свечение по редкости */
+        .market-card.rar-common { border-color: rgba(148,163,184,0.4); }
+        .market-card.rar-rare { border-color: rgba(59,130,246,0.6); box-shadow: 0 8px 20px rgba(59,130,246,0.2), inset 0 1px 0 rgba(255,255,255,0.05); }
+        .market-card.rar-epic { border-color: rgba(168,85,247,0.7); box-shadow: 0 8px 20px rgba(168,85,247,0.3), inset 0 1px 0 rgba(255,255,255,0.05); }
+        .market-card.rar-legend { border-color: rgba(251,191,36,0.8); box-shadow: 0 8px 25px rgba(251,191,36,0.4), inset 0 1px 0 rgba(255,255,255,0.05); }
 
-        /* МАГАЗИН */
-        .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .part-card { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
-        .part-icon { font-size: 24px; margin-bottom: 4px; }
-        .part-name { font-size: 10px; font-weight: 800; line-height: 1.2; }
-        .part-price { font-size: 11px; font-weight: 900; color: var(--cyan); margin: 6px 0; }
+        .mc-title { font-size: 12px; font-weight: 900; margin-top: 8px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .mc-price { font-size: 14px; font-weight: 900; color: var(--cyan); margin-top: 6px; text-shadow: 0 0 10px rgba(0,240,255,0.5); }
 
-        /* КВЕСТЫ / ЧАТ */
-        .quest-card { background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px; margin-bottom: 8px; border-left: 3px solid var(--gold); }
-        .chat-box { background: rgba(0,0,0,0.4); border-radius: 14px; padding: 12px; height: 180px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--border); margin-bottom: 10px; }
-        .msg { max-width: 85%; padding: 8px 12px; border-radius: 14px; font-size: 11px; line-height: 1.4; }
-        .msg.seller { background: rgba(255,255,255,0.1); align-self: flex-start; border-bottom-left-radius: 2px; }
-        .msg.me { background: rgba(0, 243, 255, 0.15); border: 1px solid rgba(0,243,255,0.3); align-self: flex-end; border-bottom-right-radius: 2px; color: #b3f0ff; }
+        /* ================= BADGES ================= */
+        .mc-rarity { 
+            font-size: 9px; font-weight: 900; padding: 3px 8px; border-radius: 6px; 
+            margin-top: 6px; text-transform: uppercase; letter-spacing: 0.8px; 
+            border: 1px solid; box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+        }
+        .rar-common .mc-rarity { background: rgba(148,163,184,0.15); color: #cbd5e1; border-color: rgba(148,163,184,0.4); }
+        .rar-rare .mc-rarity { background: rgba(59,130,246,0.15); color: #93c5fd; border-color: rgba(59,130,246,0.5); text-shadow: 0 0 8px rgba(59,130,246,0.6); }
+        .rar-epic .mc-rarity { background: rgba(168,85,247,0.15); color: #d8b4fe; border-color: rgba(168,85,247,0.5); text-shadow: 0 0 8px rgba(168,85,247,0.6); }
+        .rar-legend .mc-rarity { background: rgba(251,191,36,0.15); color: #fde68a; border-color: rgba(251,191,36,0.6); text-shadow: 0 0 10px rgba(251,191,36,0.8); animation: pulseGold 2s infinite; }
+        @keyframes pulseGold { 0%, 100% { box-shadow: 0 0 5px rgba(251,191,36,0.3); } 50% { box-shadow: 0 0 15px rgba(251,191,36,0.7); } }
 
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--cyan); color: #000; padding: 10px 20px; border-radius: 20px; font-weight: 900; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 1000; font-size: 12px; box-shadow: 0 10px 30px rgba(0,243,255,0.4); }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(10px); }
+        /* ================= BUTTONS ================= */
+        .btn { 
+            background: rgba(255,255,255,0.06); border: 1.5px solid var(--glass-border); 
+            border-radius: 14px; padding: 12px 16px; font-weight: 800; font-size: 12px; 
+            color: #fff; cursor: pointer; transition: all 0.15s; text-align: center; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+        .btn:active { transform: scale(0.96); box-shadow: 0 2px 6px rgba(0,0,0,0.6); }
+        .btn:disabled { opacity: 0.35; pointer-events: none; }
+        .btn-cyan { background: linear-gradient(135deg, rgba(0,240,255,0.2), rgba(0,240,255,0.08)); border-color: var(--cyan); color: var(--cyan); box-shadow: 0 4px 15px rgba(0,240,255,0.2); }
+        .btn-green { background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,255,136,0.08)); border-color: var(--green); color: var(--green); box-shadow: 0 4px 15px rgba(0,255,136,0.2); }
+        .btn-red { background: linear-gradient(135deg, rgba(255,45,85,0.2), rgba(255,45,85,0.08)); border-color: var(--red); color: var(--red); }
+        .btn-gold { background: linear-gradient(135deg, rgba(255,204,0,0.2), rgba(255,204,0,0.08)); border-color: var(--gold); color: var(--gold); }
+
+        /* ================= WORKSHOP ================= */
+        .workbench { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        
+        /* Верстак (стол) */
+        .workbench-stage {
+            position: relative; width: 100%; 
+            background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(30, 41, 59, 0.3));
+            border-radius: 20px; padding: 20px 10px 15px; 
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+        }
+        .workbench-stage::before {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%;
+            background: repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0,240,255,0.05) 20px, rgba(0,240,255,0.05) 21px);
+            pointer-events: none;
+        }
+
+        .repair-panel { 
+            background: rgba(0,0,0,0.6); border-radius: 18px; padding: 18px; 
+            width: 100%; border: 1px solid var(--glass-border); text-align: center; 
+            position: relative; overflow: hidden;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.7);
+        }
+        
+        .step-indicator { display: flex; justify-content: space-between; margin-bottom: 15px; padding: 0 5px; }
+        .step-dot { 
+            flex: 1; height: 4px; background: rgba(255,255,255,0.1); 
+            margin: 0 3px; border-radius: 2px; position: relative;
+        }
+        .step-dot.done { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+        .step-dot.fail { background: var(--red); box-shadow: 0 0 10px var(--red); }
+
+        .risk-bar { width: 100%; height: 8px; background: #000; border-radius: 4px; margin: 12px 0; overflow: hidden; border: 1px solid #1e293b; }
+        .risk-fill { height: 100%; background: linear-gradient(90deg, var(--green), var(--gold), var(--red)); transition: 0.4s; box-shadow: 0 0 10px currentColor; }
+        
+        .ws-list-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(30, 41, 59, 0.5); padding: 12px; border-radius: 16px; 
+            margin-bottom: 10px; border: 1px solid var(--glass-border); cursor: pointer; 
+            transition: 0.2s;
+        }
+        .ws-list-item:active { background: rgba(0,240,255,0.1); border-color: var(--cyan); }
+
+        /* ================= SHOP ================= */
+        .shop-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .part-card { 
+            background: linear-gradient(180deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.9)); 
+            border: 1px solid var(--glass-border); border-radius: 14px; padding: 10px 6px; 
+            text-align: center; display: flex; flex-direction: column; justify-content: space-between; 
+            transition: 0.2s;
+        }
+        .part-card:active { border-color: var(--cyan); }
+        .part-icon { font-size: 26px; margin-bottom: 4px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.5)); }
+        .part-name { font-size: 9px; font-weight: 800; line-height: 1.2; margin-bottom: 4px; }
+        .part-price { font-size: 11px; font-weight: 900; color: var(--cyan); margin-bottom: 6px; }
+        .btn-buy { padding: 5px; font-size: 9px; border-radius: 8px; }
+
+        /* ================= QUESTS/CHAT ================= */
+        .quest-card { 
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(15, 23, 42, 0.8)); 
+            padding: 14px; border-radius: 14px; margin-bottom: 10px; 
+            border-left: 4px solid var(--gold); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+        .chat-box { 
+            background: rgba(0,0,0,0.5); border-radius: 16px; padding: 14px; height: 190px; 
+            overflow-y: auto; display: flex; flex-direction: column; gap: 10px; 
+            border: 1px solid var(--glass-border); margin-bottom: 12px; 
+        }
+        .msg { max-width: 85%; padding: 10px 14px; border-radius: 16px; font-size: 12px; line-height: 1.4; }
+        .msg.seller { background: rgba(51, 65, 85, 0.8); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg.me { background: rgba(0, 240, 255, 0.15); border: 1px solid rgba(0,240,255,0.3); align-self: flex-end; border-bottom-right-radius: 4px; color: #a5f3fc; }
+
+        .toast { 
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); 
+            background: linear-gradient(135deg, var(--cyan), #0ea5e9); color: #000; 
+            padding: 12px 24px; border-radius: 20px; font-weight: 900; opacity: 0; 
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; z-index: 1000; 
+            font-size: 13px; box-shadow: 0 10px 30px rgba(0,240,255,0.4); 
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* Кейс-анимация */
+        .case-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.95); z-index: 100;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-radius: 24px; animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .case-win { animation: caseWin 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes caseWin { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
     </style>
 </head>
 <body>
 
 <div class="game">
     <div class="header">
-        <div class="logo">ПЕРЕКУП УЛЬТРА</div>
+        <div class="logo">ПЕРЕКУП ULTRA</div>
         <div class="stats">
             <div class="stat money">💵 <span id="ui-money">0</span></div>
-            <div class="stat level">Ур. <span id="ui-level">1</span></div>
+            <div class="stat lvl">⭐ <span id="ui-level">1</span></div>
         </div>
     </div>
     <div class="xp-bar"><div class="xp-fill" id="ui-xp"></div></div>
@@ -177,10 +381,10 @@
 <script>
 // ================= БАЗА ДАННЫХ =================
 const RARITY = {
-    common: { name: 'Обычный', color: 'var(--r-common)', weight: 65 },
-    rare: { name: 'Редкий', color: 'var(--r-rare)', weight: 56 },
-    epic: { name: 'Эпический', color: 'var(--r-epic)', weight: 43 },
-    legend: { name: 'Легендарный', color: 'var(--r-legend)', weight: 25 }
+    common: { name: 'Обычный', weight: 65 },
+    rare: { name: 'Редкий', weight: 56 },
+    epic: { name: 'Эпический', weight: 43 },
+    legend: { name: 'Легендарный', weight: 25 }
 };
 
 const PHONE_DB = [
@@ -192,9 +396,11 @@ const PHONE_DB = [
     { model: 'Xiaomi Redmi 7', brand: 'xiaomi', basePrice: 6500, risk: 0.22, type: 'phone', rar: 'common' },
     { model: 'Xiaomi Redmi 8', brand: 'xiaomi', basePrice: 8000, risk: 0.20, type: 'phone', rar: 'common' },
     { model: 'Honor 7A', brand: 'honor', basePrice: 5000, risk: 0.25, type: 'phone', rar: 'common' },
+    { model: 'Honor 8X', brand: 'honor', basePrice: 9000, risk: 0.19, type: 'phone', rar: 'common' },
     // RARE
     { model: 'iPhone X', brand: 'apple', basePrice: 22000, risk: 0.15, type: 'phone', rar: 'rare' },
     { model: 'iPhone XR', brand: 'apple', basePrice: 26000, risk: 0.14, type: 'phone', rar: 'rare' },
+    { model: 'iPhone 11', brand: 'apple', basePrice: 32000, risk: 0.13, type: 'phone', rar: 'rare' },
     { model: 'Samsung A52', brand: 'samsung', basePrice: 20000, risk: 0.16, type: 'phone', rar: 'rare' },
     { model: 'Xiaomi Poco X3', brand: 'xiaomi', basePrice: 18000, risk: 0.17, type: 'phone', rar: 'rare' },
     { model: 'Google Pixel 4a', brand: 'google', basePrice: 19000, risk: 0.15, type: 'phone', rar: 'rare' },
@@ -211,6 +417,7 @@ const PHONE_DB = [
     { model: 'iPad Pro M2', brand: 'apple', basePrice: 130000, risk: 0.07, type: 'tablet', rar: 'legend' }
 ];
 
+// МНОГО ДЕТАЛЕЙ
 const PARTS_SHOP = [
     { id: 'screwdriver', name: 'Отвёртка', icon: '🪛', price: 1500 },
     { id: 'screen_oled', name: 'Экран OLED', icon: '📱', price: 6000 },
@@ -223,39 +430,27 @@ const PARTS_SHOP = [
     { id: 'back_glass', name: 'Крышка', icon: '🛡️', price: 2000 },
     { id: 'motherboard', name: 'Мат. плата', icon: '💻', price: 8000 },
     { id: 'flex_cable', name: 'Шлейф', icon: '🔗', price: 1000 },
-    { id: 'face_id', name: 'FaceID', icon: '👁️', price: 4000 }
+    { id: 'face_id', name: 'FaceID', icon: '👁️', price: 4000 },
+    { id: 'vibration', name: 'Вибрация', icon: '📳', price: 800 },
+    { id: 'mic', name: 'Микрофон', icon: '🎤', price: 900 },
+    { id: 'sim_tray', name: 'Лоток SIM', icon: '📥', price: 500 },
+    { id: 'power_btn', name: 'Кнопка вкл', icon: '🔘', price: 700 },
+    { id: 'volume_btn', name: 'Кнопки громк', icon: '🔉', price: 600 },
+    { id: 'antenna', name: 'Антенна', icon: '📡', price: 1100 }
 ];
 
 const SELLER_NAMES = ['Алексей', 'Андрей', 'Дмитрий', 'Сергей', 'Павел', 'Ирина', 'Максим', 'Ольга'];
 
 // ================= СОСТОЯНИЕ =================
 let state = {
-    money: 50000,
-    level: 1,
-    xp: 0,
-    xpNext: 2000,
-    currentTab: 'market',
-    
-    totalEarned: 0,
-    inventory: { screwdriver: 0, screen_oled: 0, screen_lcd: 0, battery: 0, camera_main: 0, camera_front: 0, charging_port: 0, speaker: 0, back_glass: 0, motherboard: 0, flex_cable: 0, face_id: 0 },
-    
-    workshopPhones: [],
-    selectedPhoneId: null,
-    
+    money: 50000, level: 1, xp: 0, xpNext: 2000, currentTab: 'market', totalEarned: 0,
+    inventory: {}, workshopPhones: [], selectedPhoneId: null,
     cases: { bum: 1, good: 0, premium: 0 },
-    
-    marketListings: [],
-    activeChat: null,
-    chatHistory: [],
-    offersCount: 0,
-    
-    friendBorrowed: false,
-    friendChat: [{ sender: 'friend', text: 'Здарова! Если нужны деньги на закуп — пиши.' }],
-    
-    quests: [],
-    lastQuestReset: 0,
-    nextId: 1
+    marketListings: [], activeChat: null, chatHistory: [], offersCount: 0,
+    friendBorrowed: false, friendChat: [{ sender: 'friend', text: 'Здарова! Если нужны деньги на закуп — пиши.' }],
+    quests: [], lastQuestReset: 0, nextId: 1
 };
+PARTS_SHOP.forEach(p => state.inventory[p.id] = 0);
 
 // ================= УТИЛИТЫ =================
 function fmt(n) { return new Intl.NumberFormat('ru-RU').format(Math.round(n)); }
@@ -265,27 +460,26 @@ function showToast(text) {
     setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-function addMoney(amount) {
-    state.money += amount;
-    state.totalEarned += amount; 
-    saveGame();
-}
+function addMoney(amount) { state.money += amount; state.totalEarned += amount; saveGame(); }
 
 function addXP(amount) {
     state.xp += amount;
     if (state.xp >= state.xpNext && state.level < 50) {
-        state.level++;
-        state.xp -= state.xpNext;
-        state.xpNext = Math.floor(state.xpNext * 1.2);
+        state.level++; state.xp -= state.xpNext; state.xpNext = Math.floor(state.xpNext * 1.2);
         showToast(`🎉 Уровень ${state.level}!`);
     }
     saveGame();
 }
 
-function saveGame() { localStorage.setItem('perekup_ultra_v8', JSON.stringify(state)); }
+function saveGame() { localStorage.setItem('perekup_ultra_v9', JSON.stringify(state)); }
 function loadGame() {
-    const saved = localStorage.getItem('perekup_ultra_v8');
-    if (saved) state = JSON.parse(saved);
+    const saved = localStorage.getItem('perekup_ultra_v9');
+    if (saved) {
+        const parsed = JSON.parse(saved);
+        state = { ...state, ...parsed };
+        // Восстановим недостающие ключи инвентаря
+        PARTS_SHOP.forEach(p => { if (state.inventory[p.id] === undefined) state.inventory[p.id] = 0; });
+    }
     if (!state.marketListings || state.marketListings.length === 0) fillMarket();
     checkQuests();
 }
@@ -293,7 +487,6 @@ function loadGame() {
 // ================= АВТО-РЫНОК =================
 function fillMarket() {
     const usedModels = new Set(state.marketListings.map(p => p.model));
-    
     while(state.marketListings.length < 8) {
         const totalWeight = RARITY.common.weight + RARITY.rare.weight + RARITY.epic.weight + RARITY.legend.weight;
         let random = Math.random() * totalWeight;
@@ -337,20 +530,13 @@ function updateQuest(type, amount) {
     state.quests.forEach(q => {
         if (q.type === type && q.current < q.target) {
             q.current += amount;
-            if (q.current >= q.target) {
-                addMoney(5000);
-                showToast(`✅ Квест выполнен! +5000 ₽`);
-            }
+            if (q.current >= q.target) { addMoney(5000); showToast(`✅ Квест выполнен! +5000 ₽`); }
         }
     });
     let qGood = state.quests.find(q => q.type === 'milestone_good');
     let qPrem = state.quests.find(q => q.type === 'milestone_premium');
-    if (qGood && !qGood.claimed && state.totalEarned >= 1000000) {
-        qGood.claimed = true; state.cases.good += 1; showToast('🏆 Выдан Хороший Кейс!');
-    }
-    if (qPrem && !qPrem.claimed && state.totalEarned >= 5000000) {
-        qPrem.claimed = true; state.cases.premium += 1; showToast('👑 Выдан Премиум Кейс!');
-    }
+    if (qGood && !qGood.claimed && state.totalEarned >= 1000000) { qGood.claimed = true; state.cases.good += 1; showToast('🏆 Выдан Хороший Кейс!'); }
+    if (qPrem && !qPrem.claimed && state.totalEarned >= 5000000) { qPrem.claimed = true; state.cases.premium += 1; showToast('👑 Выдан Премиум Кейс!'); }
     saveGame();
 }
 
@@ -364,7 +550,6 @@ function updateHeader() {
 function renderDevice(brand, rar, isTablet = false) {
     const brandLogos = { 'apple': '', 'samsung': 'S', 'xiaomi': 'MI', 'google': 'G', 'honor': 'H' };
     const logo = brandLogos[brand] || brand.charAt(0).toUpperCase();
-    
     let lenses = `<div class="lens"></div><div class="lens"></div><div class="flash"></div>`;
     if (rar === 'epic' || rar === 'legend') lenses = `<div class="lens"></div><div class="lens"></div><div class="lens small"></div><div class="flash"></div>`;
     
@@ -402,7 +587,7 @@ function render() {
 // --- Рынок ---
 function renderMarket(screen) {
     fillMarket();
-    let html = `<h3 style="margin-bottom:12px; font-size:15px;">🏪 Рынок</h3>`;
+    let html = `<h3 style="margin-bottom:12px; font-size:15px; font-weight:900;">🏪 Рынок</h3>`;
     html += `<div class="market-grid">`;
     state.marketListings.forEach(item => {
         html += `
@@ -415,14 +600,14 @@ function renderMarket(screen) {
         `;
     });
     html += `</div>`;
-    html += `<button class="btn btn-cyan" style="width:100%; margin-top:12px;" onclick="manualRefreshMarket()">🔄 Обновить рынок</button>`;
-    html += `<button class="btn" style="width:100%; margin-top:8px; border-color:var(--gold); color:var(--gold);" onclick="openChat('friend', 0)">💬 Написать Вадиму</button>`;
+    html += `<button class="btn btn-cyan" style="width:100%; margin-top:14px;" onclick="manualRefreshMarket()">🔄 Обновить рынок</button>`;
+    html += `<button class="btn btn-gold" style="width:100%; margin-top:8px;" onclick="openChat('friend', 0)">💬 Написать Вадиму</button>`;
     screen.innerHTML = html;
 }
 
 window.manualRefreshMarket = function() {
-    state.marketListings = []; 
-    fillMarket(); 
+    state.marketListings = [];
+    fillMarket();
     saveGame();
     render();
     showToast('Рынок обновлен!');
@@ -431,7 +616,11 @@ window.manualRefreshMarket = function() {
 // --- Мастерская ---
 function renderWorkshop(screen) {
     if (state.workshopPhones.length === 0) {
-        return screen.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--muted);"><div style="font-size:40px;">🔧</div>Мастерская пуста.</div>`;
+        return screen.innerHTML = `<div style="text-align:center; padding:60px 20px; color:var(--muted);">
+            <div style="font-size:50px; margin-bottom:15px; filter: drop-shadow(0 0 15px rgba(0,240,255,0.5));">🔧</div>
+            <div style="font-weight:800; font-size:15px;">Мастерская пуста</div>
+            <div style="font-size:11px; margin-top:5px;">Купи телефон или открой кейс</div>
+        </div>`;
     }
 
     if (state.selectedPhoneId) {
@@ -439,37 +628,55 @@ function renderWorkshop(screen) {
         if (!p) { state.selectedPhoneId = null; return render(); }
 
         const isTablet = p.type === 'tablet';
-        let currentRisk = p.risk + 0.02; 
-        if (p.repairStage === 2) currentRisk += 0.02; 
+        let currentRisk = p.risk + 0.02;
+        if (p.repairStage === 2) currentRisk += 0.02;
 
-        let html = `<div class="workbench">`;
-        html += `<div style="display:flex; justify-content:space-between; width:100%; align-items:center; margin-bottom:5px;">
-            <button class="btn" onclick="state.selectedPhoneId=null; render();">← Назад</button>
-            <div style="text-align:right;">
-                <h3 style="font-size:15px; color:var(--${p.rar === 'legend' ? 'gold' : 'cyan'});">${p.model}</h3>
-                <div style="font-size:10px; color:${RARITY[p.rar].color}; font-weight:900;">${RARITY[p.rar].name}</div>
+        // Индикатор шагов
+        let stepsHtml = '';
+        for (let i = 0; i < 3; i++) {
+            let cls = 'step-dot';
+            if (p.repairStage === -1) cls += ' fail';
+            else if (p.repairStage > i) cls += ' done';
+            stepsHtml += `<div class="${cls}"></div>`;
+        }
+
+        let html = `<div class="workbench">
+            <div style="display:flex; justify-content:space-between; width:100%; align-items:center; margin-bottom:6px;">
+                <button class="btn" style="padding:8px 12px;" onclick="state.selectedPhoneId=null; render();">← Назад</button>
+                <div style="text-align:right;">
+                    <h3 style="font-size:15px; color:var(--${p.rar === 'legend' ? 'gold' : 'cyan'}); font-weight:900;">${p.model}</h3>
+                    <div class="mc-rarity rar-${p.rar}" style="display:inline-block;">${RARITY[p.rar].name}</div>
+                </div>
             </div>
-        </div>`;
-        
-        html += `<div id="phone-visual" style="position:relative;">${renderDevice(p.brand, p.rar, isTablet)}<div class="scan-line"></div></div>`;
+            
+            <div class="workbench-stage">
+                <div id="phone-visual" style="position:relative;">
+                    ${renderDevice(p.brand, p.rar, isTablet)}
+                    <div class="scan-line"></div>
+                </div>
+            </div>
 
-        html += `<div class="repair-panel" id="repair-panel">
-            <div style="font-size:12px; font-weight:900; color:var(--cyan);">
-                ${p.repairStage === 0 ? '1. Разборка' : p.repairStage === 1 ? '2. Замена' : p.repairStage === 2 ? '3. Сборка' : p.repairStage === 3 ? '✅ Готов!' : '💥 СЛОМАН'}
-            </div>`;
+            <div class="repair-panel" id="repair-panel">
+                <div class="step-indicator">${stepsHtml}</div>
+                <div style="font-size:13px; font-weight:900; color:var(--cyan); margin-bottom:8px;">
+                    ${p.repairStage === 0 ? 'Шаг 1: Разборка' : p.repairStage === 1 ? 'Шаг 2: Замена' : p.repairStage === 2 ? 'Шаг 3: Сборка' : p.repairStage === 3 ? '✅ Готов!' : '💥 СЛОМАН'}
+                </div>`;
 
         if (p.repairStage >= 0 && p.repairStage < 3) {
             html += `<div class="risk-bar"><div class="risk-fill" style="width:${currentRisk*100}%"></div></div>`;
-            html += `<div style="font-size:10px; color:var(--gold); font-weight:bold; margin-bottom:10px;">Риск: ${Math.round(currentRisk*100)}%</div>`;
+            html += `<div style="font-size:11px; color:var(--gold); font-weight:800; margin-bottom:12px;">⚠ Риск поломки: ${Math.round(currentRisk*100)}%</div>`;
         }
 
         if (p.repairStage === 0) {
-            html += state.inventory.screwdriver > 0 ? `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0)">🪛 Открутить винты</button>` : `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Нужна отвёртка</button>`;
+            html += state.inventory.screwdriver > 0 
+                ? `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0)">🪛 Открутить винты</button>` 
+                : `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Купить отвёртку</button>`;
         } else if (p.repairStage === 1) {
-            let neededPart = p.neededPart;
-            let partName = PARTS_SHOP.find(x => x.id === neededPart)?.name || 'Деталь';
-            let hasPart = state.inventory[neededPart] > 0;
-            html += hasPart ? `<button class="btn btn-cyan" style="width:100%;" onclick="usePart()">⚙️ Заменить: ${partName}</button>` : `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Нужно: ${partName}</button>`;
+            let partName = PARTS_SHOP.find(x => x.id === p.neededPart)?.name || 'Деталь';
+            let hasPart = state.inventory[p.neededPart] > 0;
+            html += hasPart 
+                ? `<button class="btn btn-cyan" style="width:100%;" onclick="usePart()">⚙️ Заменить: ${partName}</button>` 
+                : `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Нужно: ${partName}</button>`;
         } else if (p.repairStage === 2) {
             html += `<button class="btn btn-cyan" style="width:100%;" onclick="doRepair(0.02)">🔨 Собрать</button>`;
         } else if (p.repairStage === 3) {
@@ -478,29 +685,39 @@ function renderWorkshop(screen) {
         }
 
         if (p.repairStage === -1) {
-            html = `<div class="workbench"><h2 style="color:var(--red);">💔 Сломан</h2>
-            ${renderDevice(p.brand, p.rar, isTablet)}
-            <button class="btn btn-red" style="width:100%; margin-top:15px;" onclick="scrapPhone()">🗑️ Сдать (5000 ₽)</button></div>`;
+            html = `<div class="workbench">
+                <div style="display:flex; justify-content:space-between; width:100%; align-items:center; margin-bottom:6px;">
+                    <button class="btn" onclick="state.selectedPhoneId=null; render();">← Назад</button>
+                    <h3 style="color:var(--red);">${p.model}</h3>
+                </div>
+                <div class="workbench-stage">${renderDevice(p.brand, p.rar, isTablet)}</div>
+                <div class="repair-panel">
+                    <div style="font-size:15px; color:var(--red); font-weight:900; margin-bottom:10px;">💔 УСТРОЙСТВО СЛОМАНО</div>
+                    <div style="font-size:11px; color:var(--muted); margin-bottom:15px;">Восстановлению не подлежит</div>
+                    <button class="btn btn-red" style="width:100%;" onclick="scrapPhone()">🗑️ Сдать на запчасти (5000 ₽)</button>
+                </div>
+            </div>`;
+        } else {
+            html += `</div></div>`;
         }
-        html += `</div></div>`;
         screen.innerHTML = html;
         return;
     }
 
-    let html = `<h3 style="margin-bottom:12px; font-size:15px;">🔧 Мастерская (${state.workshopPhones.length}/5)</h3>`;
+    let html = `<h3 style="margin-bottom:12px; font-size:15px; font-weight:900;">🔧 Мастерская (${state.workshopPhones.length}/5)</h3>`;
     state.workshopPhones.forEach(p => {
         let status = p.repairStage === -1 ? '💥 Сломан' : p.repairStage === 3 ? '✅ Готов' : `⚙️ Этап ${p.repairStage + 1}/3`;
         html += `
             <div class="ws-list-item rar-${p.rar}" onclick="selectPhone(${p.id})">
-                <div style="display:flex; gap:10px; align-items:center;">
+                <div style="display:flex; gap:12px; align-items:center;">
                     ${renderDevice(p.brand, p.rar, p.type === 'tablet')}
                     <div>
-                        <div style="font-weight:800; font-size:13px;">${p.model}</div>
-                        <div style="font-size:9px; color:${RARITY[p.rar].color}; font-weight:900; margin-bottom:2px;">${RARITY[p.rar].name}</div>
-                        <div style="font-size:10px; color:var(--cyan);">${status}</div>
+                        <div style="font-weight:900; font-size:13px;">${p.model}</div>
+                        <div class="mc-rarity rar-${p.rar}" style="display:inline-block; margin-top:4px;">${RARITY[p.rar].name}</div>
+                        <div style="font-size:10px; color:var(--cyan); margin-top:4px;">${status}</div>
                     </div>
                 </div>
-                <div style="font-size:16px; color:var(--muted);">➔</div>
+                <div style="font-size:18px; color:var(--cyan);">➔</div>
             </div>
         `;
     });
@@ -509,15 +726,16 @@ function renderWorkshop(screen) {
 
 // --- Магазин ---
 function renderShop(screen) {
-    let html = `<h3 style="margin-bottom:12px; font-size:15px;">🛒 Запчасти</h3><div class="shop-grid">`;
+    let html = `<h3 style="margin-bottom:12px; font-size:15px; font-weight:900;">🛒 Запчасти</h3><div class="shop-grid">`;
     PARTS_SHOP.forEach(part => {
         const owned = state.inventory[part.id] || 0;
         html += `
             <div class="part-card">
                 <div class="part-icon">${part.icon}</div>
-                <div class="part-name">${part.name} ${owned > 0 ? `<span style="color:var(--green)">(${owned})</span>` : ''}</div>
+                <div class="part-name">${part.name}</div>
+                <div style="font-size:9px; color:${owned > 0 ? 'var(--green)' : 'var(--muted)'};">${owned > 0 ? `В наличии: ${owned}` : 'Нет'}</div>
                 <div class="part-price">${fmt(part.price)} ₽</div>
-                <button class="btn btn-cyan" style="width:100%; padding:6px; font-size:10px;" onclick="buyPart('${part.id}', ${part.price})">Купить</button>
+                <button class="btn btn-cyan btn-buy" onclick="buyPart('${part.id}', ${part.price})">Купить</button>
             </div>
         `;
     });
@@ -527,23 +745,23 @@ function renderShop(screen) {
 
 // --- Кейсы ---
 function renderCases(screen) {
-    let html = `<h3 style="margin-bottom:12px; font-size:15px;">📦 Кейсы</h3><div class="market-grid">`;
-    html += `<div class="market-card rar-common"><div style="font-size:30px; margin:10px 0;">📦</div><div class="mc-title">Кейс Бомжа</div><button class="btn btn-cyan" style="width:100%; margin-top:8px;" onclick="openCase('bum')" ${state.cases.bum <= 0 ? 'disabled' : ''}>Открыть (${state.cases.bum})</button></div>`;
-    html += `<div class="market-card rar-rare"><div style="font-size:30px; margin:10px 0;">🎁</div><div class="mc-title">Хороший Кейс</div><button class="btn btn-cyan" style="width:100%; margin-top:8px;" onclick="openCase('good')" ${state.cases.good <= 0 ? 'disabled' : ''}>Открыть (${state.cases.good})</button></div>`;
-    html += `<div class="market-card rar-legend"><div style="font-size:30px; margin:10px 0;">👑</div><div class="mc-title">Премиум Кейс</div><button class="btn btn-cyan" style="width:100%; margin-top:8px;" onclick="openCase('premium')" ${state.cases.premium <= 0 ? 'disabled' : ''}>Открыть (${state.cases.premium})</button></div>`;
+    let html = `<h3 style="margin-bottom:12px; font-size:15px; font-weight:900;">📦 Кейсы</h3><div class="market-grid">`;
+    html += `<div class="market-card rar-common"><div style="font-size:36px; margin:10px 0;">📦</div><div class="mc-title">Кейс Бомжа</div><button class="btn btn-cyan" style="width:100%; margin-top:8px;" onclick="openCase('bum')" ${state.cases.bum <= 0 ? 'disabled' : ''}>Открыть (${state.cases.bum})</button></div>`;
+    html += `<div class="market-card rar-rare"><div style="font-size:36px; margin:10px 0;">🎁</div><div class="mc-title">Хороший Кейс</div><button class="btn btn-cyan" style="width:100%; margin-top:8px;" onclick="openCase('good')" ${state.cases.good <= 0 ? 'disabled' : ''}>Открыть (${state.cases.good})</button></div>`;
+    html += `<div class="market-card rar-legend"><div style="font-size:36px; margin:10px 0;">👑</div><div class="mc-title">Премиум Кейс</div><button class="btn btn-cyan" style="width:100%; margin-top:8px;" onclick="openCase('premium')" ${state.cases.premium <= 0 ? 'disabled' : ''}>Открыть (${state.cases.premium})</button></div>`;
     html += `</div>`;
     screen.innerHTML = html;
 }
 
 // --- Квесты ---
 function renderQuests(screen) {
-    let html = `<h3 style="margin-bottom:12px; font-size:15px;">📋 Квесты</h3>`;
+    let html = `<h3 style="margin-bottom:12px; font-size:15px; font-weight:900;">📋 Квесты</h3>`;
     state.quests.forEach(q => {
         let done = q.current >= q.target;
         let rewardText = q.rewardCase ? `📦 Кейс` : `5000 ₽`;
         html += `
             <div class="quest-card" style="${done ? 'opacity:0.5; border-color:var(--green);' : ''}">
-                <div style="font-size:13px; font-weight:800; margin-bottom:4px;">${q.desc}</div>
+                <div style="font-size:13px; font-weight:900; margin-bottom:4px;">${q.desc}</div>
                 <div style="font-size:11px; color:var(--muted); margin-bottom:6px;">Прогресс: ${fmt(Math.min(q.current, q.target))} / ${fmt(q.target)}</div>
                 <div style="font-size:12px; color:var(--gold); font-weight:900;">Награда: ${rewardText}</div>
             </div>
@@ -570,18 +788,25 @@ function renderChat(screen) {
     let chatHtml = state.chatHistory.map(m => `<div class="msg ${m.sender}">${m.text}</div>`).join('');
     
     screen.innerHTML = `
-        <div style="display:flex; justify-content:space-between; margin-bottom:10px; align-items:center;">
-            <b style="font-size:15px;">${isMarket ? state.chatTarget.model : '👤 Вадим'}</b>
-            <button class="btn" onclick="closeChat()">← Назад</button>
+        <div style="display:flex; justify-content:space-between; margin-bottom:12px; align-items:center;">
+            <b style="font-size:16px;">${isMarket ? state.chatTarget.model : '👤 Вадим'}</b>
+            <button class="btn" style="padding:8px 14px;" onclick="closeChat()">← Назад</button>
         </div>
-        ${isMarket ? `<div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">${renderDevice(state.chatTarget.brand, state.chatTarget.rar)}<div><div class="mc-rarity rar-${state.chatTarget.rar}" style="display:inline-block;">${RARITY[state.chatTarget.rar].name}</div><div class="mc-price">${fmt(state.chatTarget.sellerPrice)} ₽</div></div></div>` : ''}
+        ${isMarket ? `
+            <div style="display:flex; gap:12px; align-items:center; margin-bottom:12px; padding:10px; background:rgba(0,0,0,0.3); border-radius:14px;">
+                ${renderDevice(state.chatTarget.brand, state.chatTarget.rar)}
+                <div>
+                    <div class="mc-rarity rar-${state.chatTarget.rar}" style="display:inline-block;">${RARITY[state.chatTarget.rar].name}</div>
+                    <div class="mc-price" style="margin-top:8px;">${fmt(state.chatTarget.sellerPrice)} ₽</div>
+                </div>
+            </div>` : ''}
         <div class="chat-box" id="chatBox">${chatHtml}</div>
-        <div style="display:flex; gap:6px;">
+        <div style="display:flex; gap:8px;">
             ${isMarket ? `
-                <button class="btn btn-gold" style="flex:1;" onclick="bargain()" ${state.offersCount >= 3 ? 'disabled' : ''}>Торг (${state.offersCount}/3)</button>
-                <button class="btn btn-green" style="flex:1;" onclick="buyFromMarket()">Купить</button>
+                <button class="btn btn-gold" style="flex:1;" onclick="bargain()" ${state.offersCount >= 3 ? 'disabled' : ''}>🤝 Торг (${state.offersCount}/3)</button>
+                <button class="btn btn-green" style="flex:1;" onclick="buyFromMarket()">💰 Купить</button>
             ` : `
-                ${!state.friendBorrowed ? `<button class="btn btn-cyan" style="flex:1;" onclick="borrow()">Занять 20 000 ₽</button>` : `<button class="btn btn-green" style="flex:1;" onclick="repay()" ${state.money < 20000 ? 'disabled' : ''}>Вернуть долг</button>`}
+                ${!state.friendBorrowed ? `<button class="btn btn-cyan" style="flex:1;" onclick="borrow()">💸 Занять 20 000 ₽</button>` : `<button class="btn btn-green" style="flex:1;" onclick="repay()" ${state.money < 20000 ? 'disabled' : ''}>💵 Вернуть долг</button>`}
             `}
         </div>
     `;
@@ -604,7 +829,7 @@ window.openCase = function(type) {
     else pool = roll < 0.4 ? PHONE_DB.filter(p => p.rar === 'epic') : PHONE_DB.filter(p => p.rar === 'legend');
     
     const wonPhone = { ...pool[Math.floor(Math.random() * pool.length)] };
-    let possibleParts = ['screen_oled', 'screen_lcd', 'battery', 'camera_main', 'charging_port', 'speaker', 'flex_cable'];
+    let possibleParts = ['screen_oled', 'screen_lcd', 'battery', 'camera_main', 'charging_port', 'speaker', 'flex_cable', 'vibration', 'mic', 'sim_tray', 'power_btn', 'volume_btn', 'antenna'];
     if (wonPhone.rar === 'legend' || wonPhone.rar === 'epic') possibleParts.push('motherboard', 'camera_front', 'back_glass', 'face_id');
     
     const phoneInstance = { ...wonPhone, id: state.nextId++, repairStage: 0, neededPart: possibleParts[Math.floor(Math.random() * possibleParts.length)] };
@@ -613,15 +838,15 @@ window.openCase = function(type) {
 
     const screen = document.getElementById('screen');
     const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:absolute; inset:0; background:rgba(0,0,0,0.95); z-index:100; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:20px;';
-    overlay.innerHTML = `<div style="text-align:center;">
-        <h2 style="color:var(--${wonPhone.rar==='legend'?'gold':'cyan'}); margin-bottom:10px;">ВЫПАЛО!</h2>
+    overlay.className = 'case-overlay';
+    overlay.innerHTML = `<div class="case-win" style="text-align:center;">
+        <h2 style="color:var(--${wonPhone.rar==='legend'?'gold':'cyan'}); margin-bottom:15px; font-size:22px; text-shadow:0 0 20px currentColor;">ВЫПАЛО!</h2>
         ${renderDevice(wonPhone.brand, wonPhone.rar, wonPhone.type==='tablet')}
-        <h3 style="margin-top:10px;">${wonPhone.model}</h3>
-        <div style="font-size:12px; color:${RARITY[wonPhone.rar].color}; font-weight:900; text-transform:uppercase; margin-top:5px;">${RARITY[wonPhone.rar].name}</div>
+        <h3 style="margin-top:15px; font-size:18px;">${wonPhone.model}</h3>
+        <div class="mc-rarity rar-${wonPhone.rar}" style="display:inline-block; margin-top:8px;">${RARITY[wonPhone.rar].name}</div>
     </div>`;
     screen.appendChild(overlay);
-    setTimeout(() => { overlay.remove(); render(); }, 2500);
+    setTimeout(() => { overlay.remove(); render(); }, 2800);
 };
 
 window.bargain = function() {
@@ -650,7 +875,7 @@ window.buyFromMarket = function() {
     if (state.workshopPhones.length >= 5) return showToast('Мастерская заполнена!');
     
     state.money -= t.sellerPrice;
-    let possibleParts = ['screen_oled', 'screen_lcd', 'battery', 'camera_main', 'charging_port', 'speaker', 'flex_cable'];
+    let possibleParts = ['screen_oled', 'screen_lcd', 'battery', 'camera_main', 'charging_port', 'speaker', 'flex_cable', 'vibration', 'mic', 'sim_tray', 'power_btn', 'volume_btn', 'antenna'];
     if (t.rar === 'legend' || t.rar === 'epic') possibleParts.push('motherboard', 'camera_front', 'back_glass', 'face_id');
     
     const phoneInstance = { ...t, id: state.nextId++, repairStage: 0, neededPart: possibleParts[Math.floor(Math.random() * possibleParts.length)] };
@@ -670,30 +895,37 @@ window.buyPart = function(id, price) {
     state.money -= price; state.inventory[id]++; saveGame(); render();
 };
 
+// ================= УЛЬТРА-АНИМАЦИЯ РЕМОНТА =================
 function playRepairAnimation(callback) {
     const visual = document.getElementById('phone-visual');
     const panel = document.getElementById('repair-panel');
     if (!visual || !panel) return callback();
     
     const phone = visual.querySelector('.real-phone');
-    if(phone) phone.classList.add('repairing');
+    if(phone) {
+        phone.classList.add('repairing');
+        phone.classList.add('glitching');
+    }
     visual.classList.add('scanning');
     
+    // Искры
     const sparksContainer = document.createElement('div');
     sparksContainer.className = 'sparks';
     sparksContainer.style.opacity = '1';
     
-    for(let i=0; i<8; i++) {
+    const icons = ['⚡','🔧','🔩','⚙️','✨','💫','⚡'];
+    for(let i=0; i<12; i++) {
         setTimeout(() => {
             const spark = document.createElement('div');
             spark.className = 'spark';
-            spark.textContent = ['⚡','🔧','🔩','⚙️','✨'][Math.floor(Math.random()*5)];
-            spark.style.setProperty('--x', (Math.random() * 120 - 60) + 'px');
-            spark.style.setProperty('--y', (Math.random() * 120 - 60) + 'px');
+            spark.textContent = icons[Math.floor(Math.random()*icons.length)];
+            spark.style.setProperty('--x', (Math.random() * 150 - 75) + 'px');
+            spark.style.setProperty('--y', (Math.random() * 150 - 75) + 'px');
+            spark.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
             spark.style.left = '50%'; spark.style.top = '50%';
             sparksContainer.appendChild(spark);
-            setTimeout(() => spark.remove(), 500);
-        }, i * 50);
+            setTimeout(() => spark.remove(), 600);
+        }, i * 60);
     }
     visual.appendChild(sparksContainer);
 
@@ -701,11 +933,14 @@ function playRepairAnimation(callback) {
     btns.forEach(b => b.disabled = true);
 
     setTimeout(() => {
-        if(phone) phone.classList.remove('repairing');
+        if(phone) {
+            phone.classList.remove('repairing');
+            phone.classList.remove('glitching');
+        }
         visual.classList.remove('scanning');
         sparksContainer.remove();
         callback();
-    }, 900);
+    }, 1100);
 }
 
 window.doRepair = function(extraRisk) {
