@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ПЕРЕКУП ULTRA 10.0</title>
+    <title>ПЕРЕКУП ULTRA 11.0</title>
     <style>
         :root {
             --bg-body: #ffffff;
@@ -112,6 +112,7 @@
         .btn-blue { background: var(--blue); color: #fff; border: none; box-shadow: 0 4px 10px rgba(37,99,235,0.3); }
         .btn-green { background: var(--green); color: #fff; border: none; box-shadow: 0 4px 10px rgba(16,185,129,0.3); }
         .btn-red { background: var(--red); color: #fff; border: none; box-shadow: 0 4px 10px rgba(239,68,68,0.3); }
+        .btn-purple { background: #a855f7; color: #fff; border: none; box-shadow: 0 4px 10px rgba(168,85,247,0.3); }
 
         /* ================= WORKSHOP ================= */
         .workbench { display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -158,6 +159,14 @@
 
         .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); background: var(--text-main); color: #fff; padding: 12px 24px; border-radius: 20px; font-weight: 800; opacity: 0; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; z-index: 1000; font-size: 13px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* UNLOCK MODAL */
+        .unlock-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.95); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 24px; padding: 20px; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .unlock-title { font-size: 24px; font-weight: 900; color: var(--blue); margin-bottom: 10px; text-align: center; }
+        .unlock-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; text-align: center; }
+        .unlock-list { display: flex; flex-direction: column; gap: 10px; width: 100%; max-height: 400px; overflow-y: auto; }
+        .unlock-item { display: flex; align-items: center; gap: 10px; background: var(--bg-screen); padding: 10px; border-radius: 12px; border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -232,8 +241,14 @@ const PC_PARTS_DB = [
     { id: 'monitor', name: 'Монитор 144Hz', icon: '🖥️', price: 20000 }
 ];
 
+// ИНСТРУМЕНТЫ (Отвёртки)
+const TOOLS = [
+    { id: 'screwdriver_basic', name: 'Отвёртка (Базовая)', icon: '🪛', price: 1000, level: 1, speed: 1000 },
+    { id: 'screwdriver_electric', name: 'Отвёртка (Электро)', icon: '⚡', price: 5000, level: 2, speed: 400 },
+    { id: 'screwdriver_pro', name: 'Отвёртка (Профи)', icon: '🔥', price: 15000, level: 3, speed: 150 }
+];
+
 const PARTS_SHOP = [
-    { id: 'screwdriver', name: 'Отвёртка', icon: '🪛', price: 1000 },
     { id: 'screen_oled', name: 'Экран OLED', icon: '📱', price: 6000 },
     { id: 'screen_lcd', name: 'Экран LCD', icon: '🖥️', price: 3000 },
     { id: 'battery', name: 'Батарея', icon: '🔋', price: 2500 },
@@ -259,9 +274,10 @@ let state = {
     cases: { bum: 1, good: 0, premium: 0 },
     marketListings: [], activeChat: null, chatHistory: [], offersCount: 0,
     friendBorrowed: false, 
-    // Переименовали друга в Саню
     friendChat: [{ sender: 'friend', text: 'Здарова! Это Саня. Если нужны деньги на закуп — пиши.' }],
-    quests: [], lastQuestReset: 0, nextId: 1
+    quests: [], lastQuestReset: 0, nextId: 1,
+    screwdriverLevel: 0,
+    unlockedTiers: [1] // 1 = Common/Rare, 2 = Epic, 3 = Legend
 };
 
 PARTS_SHOP.forEach(p => state.inventory[p.id] = 0);
@@ -282,15 +298,23 @@ function addXP(amount) {
     if (state.xp >= state.xpNext && state.level < 50) {
         state.level++; state.xp -= state.xpNext; state.xpNext = Math.floor(state.xpNext * 1.2);
         showToast(`🎉 Уровень ${state.level}!`);
-        if (state.level === 5) showToast('🔓 Открыт Эпический рынок!');
-        if (state.level === 10) showToast('🔓 Открыт Легендарный рынок!');
+        
+        // Проверка на открытие новых рынков
+        if (state.level === 5 && !state.unlockedTiers.includes(2)) {
+            state.unlockedTiers.push(2);
+            showUnlockModal('epic');
+        }
+        if (state.level === 10 && !state.unlockedTiers.includes(3)) {
+            state.unlockedTiers.push(3);
+            showUnlockModal('legend');
+        }
     }
     saveGame();
 }
 
-function saveGame() { localStorage.setItem('perekup_ultra_v13', JSON.stringify(state)); }
+function saveGame() { localStorage.setItem('perekup_ultra_v14', JSON.stringify(state)); }
 function loadGame() {
-    const saved = localStorage.getItem('perekup_ultra_v13');
+    const saved = localStorage.getItem('perekup_ultra_v14');
     if (saved) {
         const parsed = JSON.parse(saved);
         state = { ...state, ...parsed };
@@ -304,8 +328,8 @@ function loadGame() {
 // ================= АВТО-РЫНОК =================
 function getUnlockedRars() {
     let rars = ['common', 'rare'];
-    if (state.level >= 5) rars.push('epic');
-    if (state.level >= 10) rars.push('legend');
+    if (state.unlockedTiers.includes(2)) rars.push('epic');
+    if (state.unlockedTiers.includes(3)) rars.push('legend');
     return rars;
 }
 
@@ -359,14 +383,14 @@ function updateHeader() {
     document.getElementById('ui-xp').style.width = Math.min(100, (state.xp / state.xpNext) * 100) + '%';
 }
 
-// ================= УЛЬТРА-РЕАЛИСТИЧНЫЕ SVG МОДЕЛИ =================
+// ================= SVG МОДЕЛИ =================
 function renderPhoneSVG(brand, rar, isTablet = false) {
     const brandColors = {
-        apple: ['#e2e8f0', '#94a3b8'], // Серебристый
-        samsung: ['#c7d2fe', '#6366f1'], // Индиго
-        xiaomi: ['#ffedd5', '#f97316'], // Оранжевый
-        google: ['#dcfce7', '#22c55e'], // Зеленый
-        honor: ['#fce7f3', '#ec4899']  // Розовый
+        apple: ['#e2e8f0', '#94a3b8'],
+        samsung: ['#c7d2fe', '#6366f1'],
+        xiaomi: ['#ffedd5', '#f97316'],
+        google: ['#dcfce7', '#22c55e'],
+        honor: ['#fce7f3', '#ec4899']
     };
     const colors = brandColors[brand] || ['#cbd5e1', '#64748b'];
     const width = isTablet ? 130 : 85;
@@ -378,7 +402,6 @@ function renderPhoneSVG(brand, rar, isTablet = false) {
     if (rar === 'epic') borderColor = 'var(--r-epic)';
     if (rar === 'legend') borderColor = 'var(--r-legend)';
 
-    // Уникальные блоки камер для каждого бренда
     let cameraBlock = '';
     if (brand === 'apple') {
         cameraBlock = `
@@ -432,31 +455,15 @@ function renderPhoneSVG(brand, rar, isTablet = false) {
                     <stop offset="100%" stop-color="#020617" />
                 </linearGradient>
             </defs>
-            
-            <!-- Корпус -->
             <rect x="5" y="5" width="90" height="190" rx="${radius}" fill="url(#grad-${brand}-${rar}-${Math.random()})" stroke="${borderColor}" stroke-width="2"/>
-            
-            <!-- Кнопки -->
             <rect x="95" y="45" width="3" height="30" rx="1.5" fill="#64748b"/>
             <rect x="2" y="40" width="3" height="20" rx="1.5" fill="#64748b"/>
             <rect x="2" y="65" width="3" height="20" rx="1.5" fill="#64748b"/>
-            
-            <!-- Экран -->
             <rect x="10" y="10" width="80" height="180" rx="${radius - 3}" fill="url(#screen-${brand}-${Math.random()})"/>
-            
-            <!-- Логотип на экране (обои) -->
             <text x="50" y="115" font-family="Arial" font-weight="900" font-size="14" fill="rgba(255,255,255,0.08)" text-anchor="middle" letter-spacing="1">${brand.toUpperCase()}</text>
-            
-            <!-- Блик на экране -->
             <path d="M 10 30 L 90 10 L 90 60 L 10 90 Z" fill="rgba(255,255,255,0.06)" />
-            
-            <!-- Уникальный блок камер -->
             ${cameraBlock}
-            
-            ${!isTablet ? `
-                <!-- Челка / Dynamic Island -->
-                <rect x="35" y="5" width="30" height="8" rx="4" fill="#000"/>
-            ` : ''}
+            ${!isTablet ? `<rect x="35" y="5" width="30" height="8" rx="4" fill="#000"/>` : ''}
         </svg>
     </div>
     `;
@@ -476,6 +483,34 @@ function render() {
     if (state.currentTab === 'shop') renderShop(screen);
     if (state.currentTab === 'cases') renderCases(screen);
     if (state.currentTab === 'quests') renderQuests(screen);
+}
+
+// --- Модальное окно открытия рынка ---
+function showUnlockModal(rarType) {
+    const screen = document.getElementById('screen');
+    const phones = PHONE_DB.filter(p => p.rar === rarType);
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'unlock-overlay';
+    
+    let listHtml = phones.map(p => `
+        <div class="unlock-item">
+            ${renderPhoneSVG(p.brand, p.rar, p.type === 'tablet')}
+            <div style="text-align:left;">
+                <div style="font-weight:900; font-size:14px;">${p.model}</div>
+                <div class="mc-rarity rar-${p.rar}" style="display:inline-block;">${RARITY[p.rar].name}</div>
+            </div>
+        </div>
+    `).join('');
+
+    overlay.innerHTML = `
+        <div style="font-size:50px; margin-bottom:10px;">🎉</div>
+        <div class="unlock-title">Новый рынок открыт!</div>
+        <div class="unlock-subtitle">Достигнут ${rarType === 'epic' ? '5' : '10'} уровень.<br>Теперь вам доступны:</div>
+        <div class="unlock-list">${listHtml}</div>
+        <button class="btn btn-blue" style="width:100%; margin-top:20px;" onclick="this.parentElement.remove()">Отлично!</button>
+    `;
+    screen.appendChild(overlay);
 }
 
 // --- Рынок Телефонов ---
@@ -613,9 +648,9 @@ function renderWorkshop(screen) {
         }
 
         if (p.repairStage === 0) {
-            html += state.inventory.screwdriver > 0 
+            html += state.screwdriverLevel > 0 
                 ? `<button class="btn btn-blue" style="width:100%;" onclick="doRepair(0)">🪛 Открутить винты</button>` 
-                : `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Купить отвёртку</button>`;
+                : `<button class="btn btn-red" style="width:100%;" onclick="state.currentTab='shop'; render();">❌ Нужна отвёртка!</button>`;
         } else if (p.repairStage === 1) {
             let partName = PARTS_SHOP.find(x => x.id === p.neededPart)?.name || 'Деталь';
             let hasPart = state.inventory[p.neededPart] > 0;
@@ -793,9 +828,33 @@ window.sellPC = function() {
     showToast('💰 ПК продан за 250 000 ₽!');
 };
 
-// --- Магазин Запчастей Телефонов ---
+// --- Магазин Запчастей и Инструментов ---
 function renderShop(screen) {
-    let html = `<h3 style="margin-bottom:12px; font-size:15px; font-weight:900;">🛒 Запчасти для телефонов</h3><div class="shop-grid">`;
+    let html = `<h3 style="margin-bottom:12px; font-size:15px; font-weight:900;">🛠️ Инструменты</h3>`;
+    html += `<div class="shop-grid" style="margin-bottom: 20px;">`;
+    
+    // Отрисовка отвёрток
+    TOOLS.forEach(tool => {
+        const isOwned = state.screwdriverLevel >= tool.level;
+        const isNext = state.screwdriverLevel === tool.level - 1;
+        
+        html += `
+            <div class="part-card" style="${isOwned ? 'opacity: 0.6;' : ''}">
+                <div style="font-size:30px; margin-bottom:5px;">${tool.icon}</div>
+                <div class="part-name">${tool.name}</div>
+                <div style="font-size:10px; color:var(--text-muted);">Скорость: ${1000/tool.speed}x</div>
+                <div class="part-price">${fmt(tool.price)} ₽</div>
+                <button class="btn ${isOwned ? 'btn-green' : (isNext ? 'btn-blue' : '')}" 
+                        onclick="buyTool(${tool.level}, ${tool.price})" 
+                        ${!isNext ? 'disabled' : ''}>
+                    ${isOwned ? 'Куплено' : 'Купить'}
+                </button>
+            </div>
+        `;
+    });
+    html += `</div>`;
+
+    html += `<h3 style="margin-bottom:12px; font-size:15px; font-weight:900;">🛒 Запчасти для телефонов</h3><div class="shop-grid">`;
     PARTS_SHOP.forEach(part => {
         const owned = state.inventory[part.id] || 0;
         html += `
@@ -811,6 +870,14 @@ function renderShop(screen) {
     html += `</div>`;
     screen.innerHTML = html;
 }
+
+window.buyTool = function(level, price) {
+    if (state.screwdriverLevel !== level - 1) return;
+    if (state.money < price) return showToast('Мало денег!');
+    state.money -= price;
+    state.screwdriverLevel = level;
+    saveGame(); render(); showToast('Инструмент улучшен!');
+};
 
 window.buyPart = function(id, price) {
     if (state.money < price) return showToast('Мало денег!');
@@ -949,8 +1016,8 @@ window.buyFromMarket = function() {
     saveGame(); render();
 };
 
-// АНИМАЦИЯ ПОЧИНКИ
-function playRepairAnimation(callback) {
+// АНИМАЦИЯ ПОЧИНКИ (Зависит от отвёртки)
+function playRepairAnimation(duration, callback) {
     const visual = document.getElementById('phone-visual');
     const panel = document.getElementById('repair-panel');
     if (!visual || !panel) return callback();
@@ -973,8 +1040,8 @@ function playRepairAnimation(callback) {
             spark.style.setProperty('--y', (Math.random() * 120 - 60) + 'px');
             spark.style.left = '50%'; spark.style.top = '50%';
             sparksContainer.appendChild(spark);
-            setTimeout(() => spark.remove(), 600);
-        }, i * 50);
+            setTimeout(() => spark.remove(), duration);
+        }, i * (duration/10));
     }
     visual.appendChild(sparksContainer);
 
@@ -986,11 +1053,16 @@ function playRepairAnimation(callback) {
         visual.classList.remove('scanning');
         sparksContainer.remove();
         callback();
-    }, 1000);
+    }, duration);
 }
 
 window.doRepair = function(extraRisk) {
-    playRepairAnimation(() => {
+    // Получаем скорость текущей отвёртки
+    let animTime = 1000;
+    if (state.screwdriverLevel === 2) animTime = 400;
+    if (state.screwdriverLevel === 3) animTime = 150;
+
+    playRepairAnimation(animTime, () => {
         const p = state.workshopPhones.find(x => x.id === state.selectedWorkshopPhoneId);
         let risk = p.risk + extraRisk; 
         
@@ -1007,7 +1079,11 @@ window.doRepair = function(extraRisk) {
 };
 
 window.usePart = function() {
-    playRepairAnimation(() => {
+    let animTime = 1000;
+    if (state.screwdriverLevel === 2) animTime = 400;
+    if (state.screwdriverLevel === 3) animTime = 150;
+
+    playRepairAnimation(animTime, () => {
         const p = state.workshopPhones.find(x => x.id === state.selectedWorkshopPhoneId);
         if (state.inventory[p.neededPart] > 0) {
             state.inventory[p.neededPart]--;
